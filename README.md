@@ -2,7 +2,11 @@
 
 ## integrantes
 
-- Cesar Hernán Ruscica.
+- Cesar Hernán Ruscica - Frontend.
 - Lautaro Soto - Backend Developer.
-- `se iran agregando a medida que acepten invitaciones`.
+- Santiago García - Diseño UX/UI.
+- Anadela Hernandez - Diseño UX/UI.
+- Sara Alcántara - Product Manager.
+- Jeniree Suarez - QA-Tester.
+
 
