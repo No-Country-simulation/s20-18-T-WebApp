@@ -1,0 +1,9 @@
+header{
+    padding: 1em;
+}
+li {
+    list-style: none;
+}
+a {
+    text-decoration: none;
+}
