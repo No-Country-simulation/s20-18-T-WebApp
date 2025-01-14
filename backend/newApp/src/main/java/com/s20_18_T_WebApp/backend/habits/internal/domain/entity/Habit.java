@@ -1,10 +1,12 @@
 package com.s20_18_T_WebApp.backend.habits.internal.domain.entity;
 
+import com.s20_18_T_WebApp.backend.habits.internal.domain.vo.WeekDayProgress;
 import com.s20_18_T_WebApp.backend.shared.domain.entity.BaseEntity;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+
+import java.util.Set;
 
 @Entity
 @SuperBuilder
@@ -24,5 +26,7 @@ public class Habit extends BaseEntity {
 
     private String name;//TODO default name segun tipo de habito.
 
-    private String day;//days of the week
+    @ElementCollection
+    @CollectionTable(name = "habit_week_days", joinColumns = @JoinColumn(name = "id"))
+    private Set<WeekDayProgress> weekDays;//dias de la semana en las que se va a repetir el habito.
 }
