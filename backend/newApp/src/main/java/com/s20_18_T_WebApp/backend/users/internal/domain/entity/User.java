@@ -19,7 +19,7 @@ import java.util.List;
 @AllArgsConstructor
 @Table(name = "users")
 public class User extends BaseEntity {
-    //fecha de nacimiento, email, password,los niveles del usuario(VO), TODO cuales son los niveles.
+    //fecha de nacimiento, email, password,los niveles del usuario(VO)
     //puntos del usuario para llegar al siguiente nivel.(int?)
     //logros del usuario TODO que logros tiene el usuario
     //password va a ir en la entidad dentro de la carpeta auth.
@@ -32,7 +32,7 @@ public class User extends BaseEntity {
 
     @Embedded
     @Column(name = "profile-photo", nullable = true)
-    private Image profilePhoto;
+    private Image profilePhoto;//esto va a ser un avatar predefinido. TODO definir los avatares de los usuarios.
 
     @Column(name = "email", nullable = false, unique = true)
     private String email;
