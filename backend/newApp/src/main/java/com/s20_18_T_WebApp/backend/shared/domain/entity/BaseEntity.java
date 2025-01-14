@@ -1,4 +1,4 @@
-package com.s20_18_T_WebApp.backend.users.internal.domain.entity;
+package com.s20_18_T_WebApp.backend.shared.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
