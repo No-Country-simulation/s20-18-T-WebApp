@@ -1,6 +1,7 @@
 package com.s20_18_T_WebApp.backend.users.internal.domain.entity;
 
 import com.s20_18_T_WebApp.backend.shared.domain.entity.BaseEntity;
+import com.s20_18_T_WebApp.backend.shared.domain.vo.Image;
 import jakarta.persistence.Column;
 
 public class User extends BaseEntity {
@@ -15,5 +16,5 @@ public class User extends BaseEntity {
     private String lastname;
 
     @Column(name = "photo, nullable = true")
-    private String photo;
+    private Image photo;
 }
