@@ -50,7 +50,7 @@ public class Habit extends BaseEntity {
     private Set<DayOfWeek> scheduleDays;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "habit_id")
     @OrderBy("date DESC")
     private List<DailyProgress> dailyProgress;
 
@@ -138,9 +138,9 @@ public class Habit extends BaseEntity {
         }
 
         // Ensure no existing daily progress for the specified date
-        if (getProgressForDate(date).isPresent()) {
-            throw new IllegalArgumentException("Daily progress for date " + date + " already exists.");
-        }
+        //if (getProgressForDate(date).isPresent()) {
+        //    throw new IllegalArgumentException("Daily progress for date " + date + " already exists.");
+        //}
 
         // Check if the date is within the scheduled days for this habit
         boolean scheduled = isDayScheduled(date);
@@ -191,7 +191,7 @@ public class Habit extends BaseEntity {
         updateProgressPercentage();
 
         // Update the streak days
-        updateStreakeDays();
+        updateStreakDays();
     }
 
     /**
@@ -220,7 +220,7 @@ public class Habit extends BaseEntity {
 
         // Calculate the progress percentage
         long currentDay = LocalDate.now().toEpochDay();
-        long habitStartDay = this.createdAt.toLocalDate().toEpochDay();
+        long habitStartDay = this.getCreatedAt().toLocalDate().toEpochDay();
         long totalDays = currentDay - habitStartDay;
         this.progressPercentage = (completedDays * 100.0 / totalDays);
     }
@@ -233,7 +233,7 @@ public class Habit extends BaseEntity {
      * counting backward. The second pass counts the longest streak by iterating
      * over all the daily progress entries and counting the longest streak.
      */
-    private void updateStreakeDays() {
+    private void updateStreakDays() {
         int currentStreak = 0;
         int maxStreak = 0;
         LocalDate currenDate = LocalDate.now();
