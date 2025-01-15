@@ -27,10 +27,6 @@ public class DailyProgress extends BaseEntity {
     @Column(name = "scheduled", nullable = false)
     private boolean scheduled;
 
-    @Enumerated
-    @Column(name = "type", nullable = false)
-    private HabitType type;
-
     public DailyProgress(LocalDate date, boolean completed, boolean scheduled) {
         this.date = date;
         this.completed = completed;
