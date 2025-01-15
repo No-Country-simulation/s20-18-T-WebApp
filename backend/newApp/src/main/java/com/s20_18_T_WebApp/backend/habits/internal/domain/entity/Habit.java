@@ -10,7 +10,9 @@ import lombok.experimental.SuperBuilder;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -21,13 +23,6 @@ import java.util.Set;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @Table(name = "habits")
 public class Habit extends BaseEntity {
-    /*
-      nombre, fecha, dias que se va a repetir(duracion del habito, puede ser para siempre o por un valor predefinido de dias. Si se termina de utilizar o no se usa por determinado tiempo se archiva.)
-    , dias de la semana. tipo de habito.
-    porcentaje de seguimiento,
-    dias de racha.
-    archivado: true o false.
-     */
 
     @Column(name = "name", nullable = false)
     private String name;//TODO default name segun tipo de habito.
@@ -41,7 +36,7 @@ public class Habit extends BaseEntity {
     private boolean isArchived = false;
 
     @Column(nullable = false)
-    private int streakDays;//dias de racha
+    private Integer streakDays;//dias de racha
 
     @Column(nullable = false, length = 100)
     private Double progressPercentage;//porcentaje de seguimiento TODO como calcularlo.
@@ -51,33 +46,63 @@ public class Habit extends BaseEntity {
     private HabitType type;
 
     @ElementCollection
-    @CollectionTable(name = "habit_week_days", joinColumns = @JoinColumn(name = "id"))
-    private Set<WeekDayProgress> weekDays;//dias de la semana en las que se va a repetir el habito.
+    private Set<DayOfWeek> scheduleDays;
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "habit_id")
+    private List<DailyProgress> dailyProgress;
 
     @Embedded
     private HabitDetails details;
 
-    public Habit (String name, LocalDate startDate, HabitType type) {
+    public Habit (String name, LocalDate startDate, HabitType type, Set<DayOfWeek> scheduleDays) {
         this.name = name;
         this.startDate = startDate;
         this.type = type;
+        this.scheduleDays = new HashSet<>(scheduleDays);
         this.isArchived = false;
         this.streakDays = 0;
         this.progressPercentage = 0.0;
-        this.weekDays = new HashSet<>();
-        initializeWeekDays();
+        this.dailyProgress = new ArrayList<>();
     }
 
     /**
-     * Initializes the week days for the habit by adding each day of the week as an unselected and not completed day.
-     * This is used to initialize the habit with all days of the week available.
+     * Checks if the given date is scheduled for the habit.
+     *
+     * @param date the date to check
+     * @return true if the date is scheduled, false otherwise
      */
-    private void initializeWeekDays() {
-        // Iterate over each day of the week
-        for (DayOfWeek day : DayOfWeek.values()) {
-            // Add the day to the set of week days with the day as an unselected and not completed day
-            this.weekDays.add(new WeekDayProgress(day));
+    public boolean isDayScheduled(LocalDate date) {
+        // Check if the day of the given date is in the schedule days
+        return scheduleDays.contains(date.getDayOfWeek());
+    }
+
+    public void addDailyProgress (LocalDate date, boolean completed) {
+        DailyProgress progress = new DailyProgress(date, completed, isDayScheduled(date));
+        dailyProgress.add(progress);
+        updateStatistics();
+    }
+
+    public void updateStatistics() {
+        updateProgressPercentage();
+        updateStreakeDays();
+    }
+
+    private void updateProgressPercentage() {
+        long totalScheduleDays = dailyProgress.stream()
+                .filter(DailyProgress::isScheduled)
+                .count();
+
+        if (totalScheduleDays == 0) {
+            this.progressPercentage = 0.0;
+            return;
         }
+
+        long completedDays = dailyProgress.stream()
+                .filter(p -> p.isScheduled() && p.isCompleted())
+                .count();
+
+        this.progressPercentage = (completedDays * 100.0) / totalScheduleDays;
     }
 
     public boolean shouldBeArchived() {
