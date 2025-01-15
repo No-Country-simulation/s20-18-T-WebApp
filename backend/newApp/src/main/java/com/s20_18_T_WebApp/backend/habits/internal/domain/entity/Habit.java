@@ -20,8 +20,9 @@ import java.util.Set;
 @Getter
 @Setter
 @AllArgsConstructor
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor
 @Table(name = "habits")
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Habit extends BaseEntity {
 
     @Column(name = "name", nullable = false)
@@ -49,11 +50,8 @@ public class Habit extends BaseEntity {
     private Set<DayOfWeek> scheduleDays;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "habit_id")
+    @JoinColumn(name = "id")
     private List<DailyProgress> dailyProgress;
-
-    @Embedded
-    private HabitDetails details;
 
     public Habit (String name, LocalDate startDate, HabitType type, Set<DayOfWeek> scheduleDays) {
         this.name = name;

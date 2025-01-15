@@ -11,12 +11,9 @@ import lombok.Setter;
 import java.time.LocalDate;
 
 @Entity
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
 @Table(name = "daily_progress")
-public class DailyProgress extends BaseEntity {
+@Inheritance(strategy = InheritanceType.JOINED)
+public abstract class DailyProgress extends BaseEntity {
 
     @Column(name = "date", nullable = false)
     private LocalDate date;
@@ -30,4 +27,10 @@ public class DailyProgress extends BaseEntity {
     @Enumerated
     @Column(name = "type", nullable = false)
     private HabitType type;
+
+    public DailyProgress(LocalDate date, boolean completed, boolean scheduled) {
+        this.date = date;
+        this.completed = completed;
+        this.scheduled = scheduled;
+    }
 }
