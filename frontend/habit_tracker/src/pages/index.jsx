@@ -1,4 +1,4 @@
-export * from './Dashboard/Dashboard';
+export * from './Habits/Habits';
 export * from './Home/Home';
 export * from './Login/Login';
 export * from './Profile/Profile';
