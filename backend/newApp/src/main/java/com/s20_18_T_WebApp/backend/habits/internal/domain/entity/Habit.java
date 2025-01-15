@@ -7,7 +7,10 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -51,5 +54,72 @@ public class Habit extends BaseEntity {
     @CollectionTable(name = "habit_week_days", joinColumns = @JoinColumn(name = "id"))
     private Set<WeekDayProgress> weekDays;//dias de la semana en las que se va a repetir el habito.
 
+    @Embedded
+    private HabitDetails details;
 
+    public Habit (String name, LocalDate startDate, HabitType type) {
+        this.name = name;
+        this.startDate = startDate;
+        this.type = type;
+        this.isArchived = false;
+        this.streakDays = 0;
+        this.progressPercentage = 0.0;
+        this.weekDays = new HashSet<>();
+        initializeWeekDays();
+    }
+
+    /**
+     * Initializes the week days for the habit by adding each day of the week as an unselected and not completed day.
+     * This is used to initialize the habit with all days of the week available.
+     */
+    private void initializeWeekDays() {
+        // Iterate over each day of the week
+        for (DayOfWeek day : DayOfWeek.values()) {
+            // Add the day to the set of week days with the day as an unselected and not completed day
+            this.weekDays.add(new WeekDayProgress(day));
+        }
+    }
+
+    public boolean shouldBeArchived() {
+        return !isArchived && getUpdatedAt().plusDays(30).isBefore(LocalDateTime.now());
+    }
+
+    public void archive() {
+        this.isArchived = true;
+    }
+
+    public void activate() {
+        this.isArchived = false;
+    }
+
+    public void updateProgress() {
+        if (weekDays == null || weekDays.isEmpty()) {
+            this.progressPercentage = 0.0;
+            return;
+        }
+
+        long completedDays = weekDays.stream()
+                .filter(WeekDayProgress::isCompleted)
+                .count();
+
+        long selectedDays = weekDays.stream()
+                .filter(WeekDayProgress::isSelected)
+                .count();
+
+        this.progressPercentage = selectedDays > 0 ? (completedDays * 100.0 /selectedDays) : 0.0;
+    }
+
+    /**
+     * Updates the streak days for the habit by counting the number of completed days in the week.
+     * This is used to keep track of the user's streak of completing the habit.
+     */
+    public void updateStreakeDays() {
+        // Count the number of completed days in the week
+        long completedDays = weekDays.stream()
+                .filter(WeekDayProgress::isCompleted)
+                .count();
+
+        // Update the streak days with the number of completed days
+        this.streakDays = (int) completedDays;
+    }
 }
