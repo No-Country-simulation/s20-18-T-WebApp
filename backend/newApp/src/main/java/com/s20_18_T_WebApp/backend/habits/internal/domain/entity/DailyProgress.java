@@ -11,9 +11,12 @@ import lombok.Setter;
 import java.time.LocalDate;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "daily_progress")
-@Inheritance(strategy = InheritanceType.JOINED)
-public abstract class DailyProgress extends BaseEntity {
+public class DailyProgress extends BaseEntity {
 
     @Column(name = "date", nullable = false)
     private LocalDate date;
@@ -34,3 +37,8 @@ public abstract class DailyProgress extends BaseEntity {
         this.scheduled = scheduled;
     }
 }
+/*
+// Crear un hábito
+Habit newHabit = new Habit("Salir a correr", HabitType.PHYSICAL_ACTIVITY,
+    Set.of(DayOfWeek.MONDAY, DayOfWeek.WEDNESDAY, DayOfWeek.FRIDAY));
+ */

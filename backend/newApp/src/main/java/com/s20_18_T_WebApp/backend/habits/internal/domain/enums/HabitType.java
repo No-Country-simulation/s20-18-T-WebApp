@@ -7,6 +7,7 @@ public enum HabitType {
     HEALTHY_LIVING("Vida Saludable"),
     WORK("Trabajo"),
     LEARNING("Aprendizaje"),
+    READING("Lectura"),
     SOCIAL_ACTIVITY("Actividad Social"),
     TRAVEL("Viaje"),
     HEALTH("Salud"),
