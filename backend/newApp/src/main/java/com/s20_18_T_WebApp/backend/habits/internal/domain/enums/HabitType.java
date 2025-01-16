@@ -17,4 +17,8 @@ public enum HabitType {
     HabitType(String translation) {
         this.translation = translation;
     }
+
+    public String getTranslation() {
+        return translation;
+    }
 }
