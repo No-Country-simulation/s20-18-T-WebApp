@@ -18,7 +18,7 @@ const theme = createTheme({
     },
   },
   typography: {
-    fontFamily: 'Outfit, sans-serif', // Reemplaza con tu fuente deseada font-family: "Outfit", serif;
+    fontFamily: 'Outfit, Arial, sans-serif', // Reemplaza con tu fuente deseada font-family: "Outfit", serif;
   },
 });
 

@@ -6,27 +6,29 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import DirectionsRunIcon from '@mui/icons-material/DirectionsRun';
 import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment';
 import ShowChartOutlinedIcon from '@mui/icons-material/ShowChartOutlined';
+import Divider from '@mui/material/Divider';
 
-const HabitCard = ({
-  icon,
-  title,
-  streak,
-  porcCompletetion,
-  unitName,
-  unitsQty,
-  date,
-  to, // Prop para la URL de destino
-}) => {
+const HabitCard = ({habit}) => {
+  const {
+    icon,
+    title,
+    streak,
+    porcCompletetion,
+    unitName,
+    unitsQty,
+    date,
+    to    
+  } = habit
+  
   return (
     <Card
       component={Link} // Usamos Link de react-router-dom
       to={to} // La URL se pasa como prop
       sx={{
         borderRadius: '1rem',
-        width: 345,
+        width: {sx: "345", md: "560px"},
         boxShadow: 1,
         textDecoration: 'none', // Quitar subrayado del enlace
         color: 'inherit', // Heredar el color del texto
@@ -64,24 +66,24 @@ const HabitCard = ({
           </IconButton>
         </Box>
 
-        <Box display="flex" justifyContent="space-around" alignItems="center" >
+        <Box display="flex" justifyContent="space-around" alignItems="center" gap="16px">
           <Box display="flex" flexDirection="column" alignItems="center">
             <Box display="flex" alignItems="center">
-              <LocalFireDepartmentIcon sx={{ color: '#FFB620', fontSize: '3rem' }} />
+              <LocalFireDepartmentIcon sx={{ color: '#FFB620', fontSize: '2.5em' }} />
               <Typography variant="h6" sx={{fontWeight: "600"}}>{streak}</Typography>
             </Box>
           </Box>
-
+          <Divider orientation="vertical" variant="middle" flexItem />
           <Box display="flex" flexDirection="column" alignItems="center">
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              <ShowChartOutlinedIcon sx={{ color: '#FFB620', fontSize: '3rem' }} />
+              <ShowChartOutlinedIcon sx={{ color: '#FFB620', fontSize: '2.5em' }} />
               <Typography variant="h6" sx={{fontWeight: "600"}} >{porcCompletetion}</Typography>
             </Box>
           </Box>
-
+          <Divider orientation="vertical" variant="middle" flexItem />
           <Box display="flex" flexDirection="column" alignItems="center">
             <Box sx={{ display: 'flex', alignItems: 'center', gap:"8px"}}>              
-              {React.cloneElement(icon, { sx: { color: '#FFB620', fontSize: '3rem' } })}
+              {React.cloneElement(icon, { sx: { color: '#FFB620', fontSize: '2.5em' } })}
               <Typography variant="h6"  sx={{fontWeight: "600"}}>{`${unitsQty} ${unitName}`}</Typography>
             </Box>
           </Box>

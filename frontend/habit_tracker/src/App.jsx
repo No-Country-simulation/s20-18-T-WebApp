@@ -9,6 +9,7 @@ import {
   Typography,
   IconButton,
 } from '@mui/material';
+import '@fontsource/outfit';
 
 import MenuIcon from '@mui/icons-material/Menu';
 import DrawerNavBar from './components/DrawerNavBar/DrawerNavBar';

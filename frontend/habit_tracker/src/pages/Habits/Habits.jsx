@@ -3,12 +3,14 @@ import HabitCard from '../../components/HabitCard/HabitCard';
 import { Box } from '@mui/material';
 import DirectionsRunIcon from '@mui/icons-material/DirectionsRun';
 import MenuBookOutlinedIcon from '@mui/icons-material/MenuBookOutlined';
+import {CalendarWeekly} from '../../components/CalendarWeekly/CalendarWeekly';
+
 
 const habitsList = [
   {
     icon: <DirectionsRunIcon />,
     title: 'Salir a correr',
-    streak: 2,
+    streak: 2,  
     porcCompletetion: '12%',
     unitName: 'Kms',
     unitsQty: 3.2,
@@ -26,6 +28,12 @@ const habitsList = [
     to: '/habits'
   },
 ]
+const sampleTasks = {
+    "2025-01-13": "completed",
+    "2025-01-14": "pending",
+    "2025-01-15": "completed",
+    // Agrega más fechas según sea necesario
+  };
 
 export const Habits = () => {
   return (
@@ -36,19 +44,16 @@ export const Habits = () => {
         flexDirection= {{xs: "column", md: "row"}}
         alignItems="center" 
         justifyContent="center" 
+        flexWrap="wrap"
         mb={2} gap="2em">
+      
       {habitsList.map((habit, index) => (
-        <HabitCard
-          key={index} // Importante para el rendimiento de React al renderizar listas
-          icon={habit.icon}
-          title={habit.title}
-          streak={habit.streak}
-          porcCompletetion={habit.porcCompletetion}
-          unitName={habit.unitName}
-          unitsQty={habit.unitsQty}
-          date={habit.date}
-          to={habit.to} // Generación dinámica de la URL
-        />
+        // <HabitCard habit={habit} key={index}/>
+        <CalendarWeekly 
+        habit={habit}        
+        tasks={sampleTasks}
+        key={index}
+      />
       ))}        
       </Box>
     </div>
