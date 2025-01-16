@@ -84,10 +84,11 @@ function App() {
         component="main"
         sx={{
           flexGrow: 1,
-          ml: { md: `${drawerWidth}px` }, // Add margin-left to shift content away from static drawer
+          ml: { md: `${drawerWidth}px` }, // Add margin-left to shift content away from static drawer          
           position: "static",
           width: { sm: '100%', md: `calc(100% - ${drawerWidth}px)` },
           p: {xs: 2, md:4},
+          mb: "100px"
         }}
       >
         <Routes>

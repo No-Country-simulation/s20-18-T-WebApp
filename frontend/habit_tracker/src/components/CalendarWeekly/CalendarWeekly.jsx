@@ -4,26 +4,68 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment';
 import ShowChartOutlinedIcon from '@mui/icons-material/ShowChartOutlined';
 import Divider from '@mui/material/Divider';
-import Chip from '@mui/material/Chip';
+
+import DayOfWeekChip from './DayOfWeekChip';
 
 // Colores para los días según su estado
 const dayColors = {
   completed: "#4caf50", // Verde
   pending: "#f44336", // Rojo
-  default: "#e0e0e0", // Gris
+  setted: "#ddd",
+  default: "none", // Gris
 };
+
 
 export const CalendarWeekly = ({ habit, tasks }) => {
     const {
         icon,
         title,
         streak,
-        porcCompletetion,
-        unitName,
-        unitsQty,
+        porcCompletetion,        
         date,
-        to    
+        to,
+        color,
+        daysWeekSet    
       } = habit
+
+      const cardStyles = {
+        borderRadius: '1rem',
+        width: {xs: "100%", md: "460px"},
+        paddingTop: "0.2em",
+        paddingLeft: "1em",
+        paddingRight: "1em",
+        boxShadow: 1,
+        textDecoration: 'none', // Quitar subrayado del enlace
+        color: 'inherit', // Heredar el color del texto
+        cursor: 'pointer', // Indicar que es clickeable
+        '&:hover': {
+          boxShadow: 3, // Un ligero efecto al pasar el ratón        
+        },
+        backgroundColor: "#FCFCFC"
+      }
+
+      const cardTitleIcon = {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: '5px',
+        width: 30,
+        height: 30,
+        bgcolor: color,
+        color: '#FCFCFC',
+        mr: 1,
+      }      
+
+      const cardTitleText = { fontWeight: '600', fontSize: '1.3em', lineHeight: "1em" };
+
+      const cardContent = {
+        display: "flex",
+        flexDirection: "column",
+        rowGap: "16px",
+        padding: {xs: '0px', md: "16px"}
+      }
+
+
   // Calcula la semana actual comenzando desde el lunes
   const getWeekDays = () => {
     const today = new Date();
@@ -41,40 +83,16 @@ export const CalendarWeekly = ({ habit, tasks }) => {
   const weekDays = getWeekDays();
 
   return (
-    <Card sx={{
-        borderRadius: '1rem',
-        width: {sx: "345", md: "460px"},
-        paddingTop: "0.2em",
-        paddingLeft: "1em",
-        paddingRight: "1em",
-        boxShadow: 1,
-        textDecoration: 'none', // Quitar subrayado del enlace
-        color: 'inherit', // Heredar el color del texto
-        cursor: 'pointer', // Indicar que es clickeable
-        '&:hover': {
-          boxShadow: 3, // Un ligero efecto al pasar el ratón        
-        },
-        backgroundColor: "#FCFCFC"
-      }}>
-      <CardContent >
-        <Box display="flex" alignItems="center" justifyContent="space-between" mb={1}>
+    <Card sx={cardStyles}>
+      <CardContent sx={cardContent}>
+
+        {/* First Row */}
+        <Box display="flex" alignItems="center" justifyContent="space-between" >
           <Box display="flex" alignItems="center">
-            <Box
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                borderRadius: '5px',
-                width: 30,
-                height: 30,
-                bgcolor: 'success.light',
-                color: 'success.contrastText',
-                mr: 1,
-              }}
-            >
+            <Box sx={cardTitleIcon} >
               {icon}
             </Box>
-            <Typography variant="subtitle1" sx={{ fontWeight: '600', fontSize: '1.3em', fontFamily: 'Outfit, Arial, sans-serif' }}>
+            <Typography variant="subtitle1" sx={cardTitleText}>
               {title}
             </Typography>
           </Box>
@@ -82,26 +100,24 @@ export const CalendarWeekly = ({ habit, tasks }) => {
             <MoreVertIcon />
           </IconButton>
         </Box>
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            gap: 1, 
-            mb: 2
-          }}
-        >
+
+        {/* Second Row */}
+        <Box sx={{ display: "flex",justifyContent: "space-between" }} >
           {weekDays.map((day, index) => {
-            const dayOfWeek = day.toLocaleDateString("es-ES", {
-                weekday: "short",
-              }); // Ejemplo: "lun."
-              const dayNumber = day.toLocaleDateString("es-ES", {
-                day: "numeric",
-              }); // Ejemplo: "15"
+            const dayOfWeek = day.toLocaleDateString("es-ES", { weekday: "short" }); 
+            const dayNumber = day.toLocaleDateString("es-ES", { day: "numeric" }); 
+            const currentIsSetted = daysWeekSet.some(d => d == index)
 
             // Determina el color según el estado de la tarea
             const taskStatus = tasks[day.toISOString().split("T")[0]]; // Formato ISO: YYYY-MM-DD
-            const backgroundColor =
-              dayColors[taskStatus] || dayColors.default;
+            let backgroundColor = dayColors.default;
+            if (currentIsSetted){
+              backgroundColor = dayColors[taskStatus] ||  dayColors.setted ;
+            }            
+            const today = new Date();
+            const isToday = day.getDate() === today.getDate() &&
+                day.getMonth() === today.getMonth() &&
+                day.getFullYear() === today.getFullYear();
 
             return (
                 <Box textAlign="center" key={index} sx={{display: "flex", flexDirection: "column", gap: "8px"}}>
@@ -111,8 +127,9 @@ export const CalendarWeekly = ({ habit, tasks }) => {
                         sx={{
                         flex: 1,
                         backgroundColor,
-                        borderRadius: "16px",
-                        padding: "10px 14px",
+                        border: (isToday && { border: '3px solid #222' }),
+                        borderRadius: "12px",
+                        padding: {xs: "4px 0.5em 2px 0.5em", md: "0.7em 1em 0.5em 1em"},
                         textAlign: "center",
                         color: "#222",
                         }}
@@ -124,10 +141,13 @@ export const CalendarWeekly = ({ habit, tasks }) => {
           })}
         </Box>
         <Divider orientation="horizontal" variant="middle" flexItem />
-        <Box display="flex" flexDirection="row" justifyContent="space-between" alignItems="center" gap="16px" width="100%" mt="16px">
-        
-          <Chip label="Todos los dias"  sx={{borderRadius: "8px", backgrounColor:"#DCE6FD", color: "#6494F6"}}/>
-          <Box display="flex" flexDirection="row" alignItems="center" width="100px" gap="12px">  
+
+        {/* Third row */}
+        <Box display="flex" flexDirection="row" justifyContent="space-between" alignItems="center"  width="100%" >       
+          
+          <DayOfWeekChip daysWeekSet={habit.daysWeekSet} color={color} />
+
+          <Box display="flex" flexDirection="row" alignItems="center"  >  
             <Box display="flex" flexDirection="row" alignItems="center">            
                 <LocalFireDepartmentIcon sx={{ color: '#FFB620', fontSize: '2em' }} />
                 <Typography variant="h6" sx={{fontWeight: "600"}}>{streak}</Typography>            

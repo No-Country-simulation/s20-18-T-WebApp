@@ -11,7 +11,7 @@ const theme = createTheme({
   palette: {
     mode: "light", // Cambia a "dark" para tema oscuro
     primary: {
-      main: "#1976d2", // Azul por defecto
+      main: "#3868F0", // Azul por defecto
     },
     secondary: {
       main: "#f50057", // Rosa
