@@ -12,13 +12,13 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 @Entity
+@Inheritance(strategy = InheritanceType.JOINED)//Crea una tabla base para la entidad habit y las subclases heredan de ella
 @SuperBuilder
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "habits")
-public class Habit extends BaseEntity {
+public abstract class Habit extends BaseEntity {
 
     @Column(name = "name", nullable = false, length = 100)
     private String name;//TODO default name segun tipo de habito.
@@ -39,20 +39,13 @@ public class Habit extends BaseEntity {
     @Column(name = "longest_streak", nullable = false)
     private int longestStreak;//dias de racha mas larga
 
-    @OneToMany(mappedBy = "habit", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<DailyProgress> dailyProgress = new HashSet<>();
-
-    @Column(nullable = false)
-    private LocalDate startDate;
-
-    private LocalDate endDate;//A menos que se especifique se considera para siempre.
-
     @Column(nullable = false)
     private boolean archived = false;
 
+    @OneToMany(mappedBy = "habit", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<DailyProgress> dailyProgress = new HashSet<>();
 
-    @Column(nullable = false)
-    private Double progressPercentage;
+    private LocalDate endDate;//A menos que se especifique se considera para siempre.
 
 
     public Habit (String name, HabitType type, Set<DayOfWeek> scheduleDays) {
@@ -68,12 +61,10 @@ public class Habit extends BaseEntity {
 
         this.name = name;
         this.type = type;
-        this.startDate = LocalDate.now();
         this.scheduleDays = new HashSet<>(scheduleDays);
         this.archived = false;
         this.currentStreak = 0;
         this.longestStreak = 0;
-        this.progressPercentage = 0.0;
     }
 
     /**
