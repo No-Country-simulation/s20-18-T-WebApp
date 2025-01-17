@@ -1,0 +1,50 @@
+package com.s20_18_T_WebApp.backend.habits.internal.domain.entity;
+
+import com.s20_18_T_WebApp.backend.habits.internal.domain.enums.HabitType;
+import com.s20_18_T_WebApp.backend.shared.domain.entity.BaseEntity;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.time.LocalDate;
+
+@Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "daily_progress")
+public class DailyProgress extends BaseEntity {
+
+    @Column(name = "date", nullable = false)
+    private LocalDate date;
+
+    @Column(name = "completed", nullable = false)
+    private boolean completed;
+
+    @Column(name = "scheduled", nullable = false)
+    private boolean scheduled;
+
+    @Column(name = "failed", nullable = false)
+    private boolean failed;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "habit_id", nullable = false)
+    private Habit habit;
+
+    /**
+     * Updates the failure status of the daily progress.
+     *
+     * This method marks the progress as failed if the date is in the past,
+     * the task was scheduled, and it has not been completed.
+     */
+    public void updateFailureStatus() {
+        // Check if the date is before today, the task was scheduled, and not completed
+        if (date.isBefore(LocalDate.now()) && scheduled && !completed) {
+            // Mark the progress as failed
+            this.failed = true;
+        }
+    }
+}
