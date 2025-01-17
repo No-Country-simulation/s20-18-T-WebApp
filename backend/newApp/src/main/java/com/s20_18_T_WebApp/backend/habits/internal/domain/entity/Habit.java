@@ -133,3 +133,16 @@ public abstract class Habit extends BaseEntity {
         this.archived = false;
     }
 }
+
+/*
+Consulta SQL para traer toda la informacion de los habitos.
+SELECT h.*, pah.distance_in_km, pah.time_in_minutes, hlh.calories, hlh.time_in_minutes,
+       bht.days_avoided, lh.topics, sah.time_in_minutes, oh.custom_notes
+FROM habit h
+LEFT JOIN physical_activity_habit pah ON h.id = pah.id
+LEFT JOIN healthy_living_habit hlh ON h.id = hlh.id
+LEFT JOIN bad_habits_tracking bht ON h.id = bht.id
+LEFT JOIN learning_habit lh ON h.id = lh.id
+LEFT JOIN social_activity_habit sah ON h.id = sah.id
+LEFT JOIN other_habit oh ON h.id = oh.id;
+ */
