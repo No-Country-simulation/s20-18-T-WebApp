@@ -34,7 +34,17 @@ public class DailyProgress extends BaseEntity {
     @JoinColumn(name = "habit_id", nullable = false)
     private Habit habit;
 
+    /**
+     * Updates the failure status of the daily progress.
+     *
+     * This method marks the progress as failed if the date is in the past,
+     * the task was scheduled, and it has not been completed.
+     */
     public void updateFailureStatus() {
-        this.failed = scheduled && !completed;
+        // Check if the date is before today, the task was scheduled, and not completed
+        if (date.isBefore(LocalDate.now()) && scheduled && !completed) {
+            // Mark the progress as failed
+            this.failed = true;
+        }
     }
 }
