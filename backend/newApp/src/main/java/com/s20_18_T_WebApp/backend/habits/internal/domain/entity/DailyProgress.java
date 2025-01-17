@@ -27,9 +27,14 @@ public class DailyProgress extends BaseEntity {
     @Column(name = "scheduled", nullable = false)
     private boolean scheduled;
 
+    @Column(name = "failed", nullable = false)
+    private boolean failed;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "habit_id", nullable = false)
+    private Habit habit;
+
+    public void updateFailureStatus() {
+        this.failed = scheduled && !completed;
+    }
 }
-/*
-// Crear un hábito
-Habit newHabit = new Habit("Salir a correr", HabitType.PHYSICAL_ACTIVITY,
-    Set.of(DayOfWeek.MONDAY, DayOfWeek.WEDNESDAY, DayOfWeek.FRIDAY));
- */
