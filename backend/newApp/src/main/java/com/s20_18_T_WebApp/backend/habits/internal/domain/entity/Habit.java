@@ -42,9 +42,6 @@ public abstract class Habit extends BaseEntity {
     @Column(nullable = false)
     private boolean archived = false;
 
-    @OneToMany(mappedBy = "habit", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<DailyProgress> dailyProgress = new HashSet<>();
-
     private LocalDate endDate;//A menos que se especifique se considera para siempre.
 
 
