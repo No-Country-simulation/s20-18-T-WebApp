@@ -18,9 +18,22 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 public class HealthyLivingHabit extends Habit {
 
+    private static final String DEFAULT_ICON = "iconoBadHabit";//TODO Definir icono a almacenar ? almacenarlo en clodinary.
+    private static final String DEFAULT_COLOR = "#000000";//TODO definir colores de cada habito.
+
     @Column(name = "time_in_minutes")
     private Integer timeInMinutes;
 
     @Column(name = "calories")
     private Integer calories;
+
+    @Override
+    public String getIcon() {
+        return DEFAULT_ICON;
+    }
+
+    @Override
+    public String getColor() {
+        return DEFAULT_COLOR;
+    }
 }

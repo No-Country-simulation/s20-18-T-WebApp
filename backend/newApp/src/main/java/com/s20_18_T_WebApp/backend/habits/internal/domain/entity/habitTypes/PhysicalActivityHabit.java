@@ -18,9 +18,22 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 public class PhysicalActivityHabit extends Habit {
 
+    private static final String DEFAULT_ICON = "iconoBadHabit";//TODO Definir icono a almacenar ? almacenarlo en clodinary.
+    private static final String DEFAULT_COLOR = "#000000";//TODO definir colores de cada habito.
+
     @Column(name = "distance_in_km")
     private Double disntanceInKm;
 
     @Column(name = "duration_in_minutes")
     private Integer durationInMinutes;
+
+    @Override
+    public String getIcon() {
+        return DEFAULT_ICON;
+    }
+
+    @Override
+    public String getColor() {
+        return DEFAULT_COLOR;
+    }
 }

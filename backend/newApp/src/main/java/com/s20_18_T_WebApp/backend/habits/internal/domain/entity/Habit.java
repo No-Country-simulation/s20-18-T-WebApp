@@ -45,14 +45,8 @@ public abstract class Habit extends BaseEntity {
     @Column(name = "end_date")
     private LocalDate endDate;//A menos que se especifique se considera para siempre.
 
-    @Column(name = "color", nullable = false)
-    private String color;
 
-    @Column(name = "icon", nullable = false)
-    private String icon;
-
-
-    public Habit (String name, HabitType type, Set<DayOfWeek> scheduleDays, String icon, String color) {
+    public Habit (String name, HabitType type, Set<DayOfWeek> scheduleDays) {
         if (name == null || name.trim().isEmpty()) {
             throw new IllegalArgumentException("Habit name cannot be null or empty.");
         }
@@ -62,12 +56,6 @@ public abstract class Habit extends BaseEntity {
         if (scheduleDays == null || scheduleDays.isEmpty()) {
             throw new IllegalArgumentException("Habit schedule days cannot be null or empty.");
         }
-        if (icon == null || icon.trim().isEmpty()) {
-            throw new IllegalArgumentException("Habit icon cannot be null or empty.");
-        }
-        if (color == null || color.trim().isEmpty()) {
-            throw new IllegalArgumentException("Habit color cannot be null or empty.");
-        }
 
         this.name = name;
         this.type = type;
@@ -75,8 +63,6 @@ public abstract class Habit extends BaseEntity {
         this.archived = false;
         this.currentStreak = 0;
         this.longestStreak = 0;
-        this.icon = icon;
-        this.color = color;
     }
 
     /**
@@ -144,6 +130,10 @@ public abstract class Habit extends BaseEntity {
         // Set the habit's archived status to false
         this.archived = false;
     }
+
+    public abstract String getIcon();
+
+    public abstract String getColor();
 }
 
 /*

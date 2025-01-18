@@ -17,6 +17,19 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 public class OtherHabit extends Habit {
 
+    private static final String DEFAULT_ICON = "iconoBadHabit";//TODO Definir icono a almacenar ? almacenarlo en clodinary.
+    private static final String DEFAULT_COLOR = "#000000";//TODO definir colores de cada habito.
+
     @Column (name = "custom_notes", length = 500)
     private String customNotes;
+
+    @Override
+    public String getIcon() {
+        return DEFAULT_ICON;
+    }
+
+    @Override
+    public String getColor() {
+        return DEFAULT_COLOR;
+    }
 }

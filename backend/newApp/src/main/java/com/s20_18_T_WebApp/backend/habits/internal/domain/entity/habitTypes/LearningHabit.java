@@ -20,6 +20,9 @@ import java.util.Set;
 @SuperBuilder
 public class LearningHabit extends Habit {
 
+    private static final String DEFAULT_ICON = "iconoBadHabit";//TODO Definir icono a almacenar ? almacenarlo en clodinary.
+    private static final String DEFAULT_COLOR = "#000000";//TODO definir colores de cada habito.
+
     @Column(name = "time_in_minutes")
     private Integer timeInMinutes;
 
@@ -27,4 +30,14 @@ public class LearningHabit extends Habit {
     @CollectionTable(name = "learning_topics", joinColumns = @JoinColumn(name = "habit_id"))
     @Column(name = "topic")
     private Set<String> topics = new HashSet<>();
+
+    @Override
+    public String getIcon() {
+        return DEFAULT_ICON;
+    }
+
+    @Override
+    public String getColor() {
+        return DEFAULT_COLOR;
+    }
 }
