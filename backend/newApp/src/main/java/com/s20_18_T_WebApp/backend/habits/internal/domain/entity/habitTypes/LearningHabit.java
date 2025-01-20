@@ -1,6 +1,7 @@
 package com.s20_18_T_WebApp.backend.habits.internal.domain.entity.habitTypes;
 
 import com.s20_18_T_WebApp.backend.habits.internal.domain.entity.Habit;
+import com.s20_18_T_WebApp.backend.habits.internal.domain.enums.HabitType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,6 +9,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -30,6 +33,9 @@ public class LearningHabit extends Habit {
     @CollectionTable(name = "learning_topics", joinColumns = @JoinColumn(name = "habit_id"))
     @Column(name = "topic")
     private Set<String> topics = new HashSet<>();
+
+    public LearningHabit(String name, HabitType type, Set<DayOfWeek> dayOfWeeks, LocalDate localDate, Integer integer) {
+    }
 
     @Override
     public String getIcon() {
