@@ -1,5 +1,5 @@
 package com.s20_18_T_WebApp.backend.habits.internal.application.dto;
 
 public sealed interface HabitDetailsDto
-        permits BadHabitsTrackingDetailsDTO, HealthyLivingDetailsDTO, LearningDetailsDTO, PhysicalActivityDetailsDTO {
+        permits BadHabitsTrackingDetailsDTO, FinancesDetailsDTO, HealthyLivingDetailsDTO, LearningDetailsDTO, PhysicalActivityDetailsDTO {
 }
