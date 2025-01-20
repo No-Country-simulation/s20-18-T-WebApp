@@ -18,10 +18,17 @@ import DrawerNavBar from './components/DrawerNavBar/DrawerNavBar';
 //import './App.css'
 import { Footer, Header } from './components/index';
 import { Home, Habits, Profile, Settings } from './pages/index';
-const drawerWidth = 240;
+const drawerWidth = 300;
 
 function App() {
   const [mobileOpen, setMobileOpen] = useState(false);
+
+  const user = {
+    id: 1,
+    name: 'Juan Perez',
+    email: 'juancape_2004@yahoo.com',
+    avatar: 'avatar02.webp'
+  }
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -63,7 +70,7 @@ function App() {
         }}
         open
       >
-       <DrawerNavBar/>
+       <DrawerNavBar user={user}/>
       </Drawer>
 
       {/* Drawer for mobile (bottom) */}
@@ -76,7 +83,7 @@ function App() {
           '& .MuiDrawer-paper': { height: 'auto', minHeight: '50vh' }, // Adjust height as needed
         }}
       >
-       <DrawerNavBar/>
+       <DrawerNavBar user={user}/>
       </Drawer>
 
       {/* Main content */}

@@ -1,11 +1,13 @@
 import React from 'react'
-import HabitCard from '../../components/HabitCard/HabitCard';
+
 import { Box } from '@mui/material';
 import DirectionsRunIcon from '@mui/icons-material/DirectionsRun';
 import MenuBookOutlinedIcon from '@mui/icons-material/MenuBookOutlined';
 import FlatwareOutlinedIcon from '@mui/icons-material/FlatwareOutlined';
 import AttachFileOutlinedIcon from '@mui/icons-material/AttachFileOutlined';
 import {CalendarWeekly} from '../../components/CalendarWeekly/CalendarWeekly';
+import SearchBarWithFilters from '../../components/SearchBarWithFilters/SearchBarWithFilters';
+
 
 
 const habitsList = [
@@ -69,13 +71,13 @@ export const Habits = () => {
   return (
     <div>
       <h2>Hábitos</h2>      
+      <SearchBarWithFilters />
       <Box display="flex"
         flexDirection= {{xs: "column", md: "row"}}
         alignItems="center" 
         justifyContent="center" 
         flexWrap="wrap"
         mb={2} gap="2em">
-      
       {habitsList.map((habit, index) => (
         // <HabitCard habit={habit} key={index}/>
         <CalendarWeekly 

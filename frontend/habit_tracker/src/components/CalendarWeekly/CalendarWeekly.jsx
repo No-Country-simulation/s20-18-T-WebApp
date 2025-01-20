@@ -1,9 +1,10 @@
-import React from "react";
+import React, {useState} from "react";
 import { Card, CardContent, Typography, Box, IconButton } from "@mui/material";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment';
 import ShowChartOutlinedIcon from '@mui/icons-material/ShowChartOutlined';
 import Divider from '@mui/material/Divider';
+import {Button} from "@mui/material";
 
 import DayOfWeekChip from './DayOfWeekChip';
 
@@ -17,6 +18,7 @@ const dayColors = {
 
 
 export const CalendarWeekly = ({ habit, tasks }) => {
+  const [ showCompleteButton, setShowCompleteButton] = useState(true);
     const {
         icon,
         title,
@@ -82,6 +84,11 @@ export const CalendarWeekly = ({ habit, tasks }) => {
 
   const weekDays = getWeekDays();
 
+  const handleClickComplete = () => {
+    //console.log('click en complete');
+    setShowCompleteButton(false);
+  }
+
   return (
     <Card sx={cardStyles}>
       <CardContent sx={cardContent}>
@@ -145,18 +152,25 @@ export const CalendarWeekly = ({ habit, tasks }) => {
         {/* Third row */}
         <Box display="flex" flexDirection="row" justifyContent="space-between" alignItems="center"  width="100%" >       
           
-          <DayOfWeekChip daysWeekSet={habit.daysWeekSet} color={color} />
-
-          <Box display="flex" flexDirection="row" alignItems="center"  >  
-            <Box display="flex" flexDirection="row" alignItems="center">            
-                <LocalFireDepartmentIcon sx={{ color: '#FFB620', fontSize: '2em' }} />
-                <Typography variant="h6" sx={{fontWeight: "600"}}>{streak}</Typography>            
-            </Box>          
-            <Box display="flex" flexDirection="row" alignItems="center">           
-                <ShowChartOutlinedIcon sx={{ color: '#FFB620', fontSize: '2em' }} />
-                <Typography variant="h6" sx={{fontWeight: "600"}} >{porcCompletetion}</Typography>            
+          {
+          (showCompleteButton) ?           
+            <Button variant="contained" sx={{width: "100%", textTransform: 'capitalize'}} 
+              onClick={handleClickComplete}>Completar</Button>          
+          : 
+          <>
+            <DayOfWeekChip daysWeekSet={habit.daysWeekSet} color={color} />          
+            <Box display="flex" flexDirection="row" alignItems="center"  >  
+              <Box display="flex" flexDirection="row" alignItems="center">            
+                  <LocalFireDepartmentIcon sx={{ color: '#FFB620', fontSize: '2em' }} />
+                  <Typography variant="h6" sx={{fontWeight: "600"}}>{streak}</Typography>            
+              </Box>          
+              <Box display="flex" flexDirection="row" alignItems="center">           
+                  <ShowChartOutlinedIcon sx={{ color: '#FFB620', fontSize: '2em' }} />
+                  <Typography variant="h6" sx={{fontWeight: "600"}} >{porcCompletetion}</Typography>            
+              </Box>
             </Box>
-          </Box>
+          </>          
+          }
         </Box>
       </CardContent>
     </Card>
