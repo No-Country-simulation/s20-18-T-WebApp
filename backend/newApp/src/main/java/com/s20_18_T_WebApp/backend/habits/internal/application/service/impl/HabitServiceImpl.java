@@ -38,6 +38,7 @@ public class HabitServiceImpl implements HabitService {
      *
      * @return A list of HabitResponseDto representing all habits.
      */
+    @Override
     public List<HabitResponseDto> getAllHabits() {
         // Fetch all habits from the repository
         List<Habit> habits = habitRepository.findAll();
@@ -50,5 +51,33 @@ public class HabitServiceImpl implements HabitService {
 
         // Return the list of HabitResponseDto
         return habitResponseDtos;
+    }
+
+    /**
+     * Retrieves a habit from the database by its id and converts it to a HabitResponseDto.
+     *
+     * @param id The id of the habit to retrieve.
+     * @return A HabitResponseDto representing the retrieved habit.
+     * @throws RuntimeException if no habit is found with the given id.
+     */
+    @Override
+    public HabitResponseDto getHabitById(Long id) {
+        // Retrieve the habit from the repository
+        Habit searchedHabit = habitRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Habit not found with id " + id));
+
+        // Convert the Habit entity to a HabitResponseDto
+        return HabitResponseDto.fromEntity(searchedHabit);
+    }
+
+    /**
+     * Deletes a habit from the database by its id.
+     *
+     * @param id The id of the habit to delete.
+     */
+    @Override
+    public void deleteHabit(Long id) {
+        // Delete the habit from the repository
+        habitRepository.deleteById(id);
     }
 }
