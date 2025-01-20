@@ -1,6 +1,7 @@
 package com.s20_18_T_WebApp.backend.habits.internal.application.service.impl;
 
 import com.s20_18_T_WebApp.backend.habits.internal.application.dto.HabitCreationRequest;
+import com.s20_18_T_WebApp.backend.habits.internal.application.dto.HabitResponseDto;
 import com.s20_18_T_WebApp.backend.habits.internal.application.service.HabitService;
 import com.s20_18_T_WebApp.backend.habits.internal.domain.entity.Habit;
 import com.s20_18_T_WebApp.backend.habits.internal.factory.HabitFactory;
@@ -9,6 +10,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -31,8 +33,22 @@ public class HabitServiceImpl implements HabitService {
         return habitRepository.save(habit);
     }
 
-    public List<Habit> getAllHabits() {
-        //TODO implement DTO to return a list of all habits
-        return habitRepository.findAll();
+    /**
+     * Retrieves all habits from the database and converts them to a list of HabitResponseDto.
+     *
+     * @return A list of HabitResponseDto representing all habits.
+     */
+    public List<HabitResponseDto> getAllHabits() {
+        // Fetch all habits from the repository
+        List<Habit> habits = habitRepository.findAll();
+
+        // Convert each Habit entity to a HabitResponseDto
+        List<HabitResponseDto> habitResponseDtos = new ArrayList<>();
+        for (Habit habit : habits) {
+            habitResponseDtos.add(HabitResponseDto.fromEntity(habit));
+        }
+
+        // Return the list of HabitResponseDto
+        return habitResponseDtos;
     }
 }
