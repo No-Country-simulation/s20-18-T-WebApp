@@ -12,7 +12,7 @@ public class HabitFactory {
      * @param request The habit creation request containing the information needed to create a new habit.
      * @return A Habit object of the appropriate type.
      */
-    public static Habit createHabit(HabitCreationRequest request) {
+    public static Habit createhabit(HabitCreationRequest request) {
         // Determine the type of habit and create the corresponding habit object
         return switch (request.type()) {
             case PHYSICAL_ACTIVITY -> createPhysicalActivityHabit(request); // Create a Physical Activity Habit
