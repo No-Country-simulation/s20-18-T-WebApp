@@ -25,7 +25,7 @@ const DrawerNavBar = ({user}) => {
   const [selectedIndex, setSelectedIndex] = useState(0); 
   const location = useLocation(); 
 
-  const userAvatarUrl = `./src/assets/${user.avatar}`;
+  const userAvatarUrl = `./images/${user.avatar}`;
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
