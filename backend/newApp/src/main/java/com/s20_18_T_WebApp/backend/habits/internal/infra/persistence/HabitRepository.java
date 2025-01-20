@@ -1,5 +1,7 @@
 package com.s20_18_T_WebApp.backend.habits.internal.infra.persistence;
 
+import com.s20_18_T_WebApp.backend.habits.internal.application.dto.HabitCreationRequest;
+import com.s20_18_T_WebApp.backend.habits.internal.application.dto.HabitResponseDto;
 import com.s20_18_T_WebApp.backend.habits.internal.domain.entity.Habit;
 import com.s20_18_T_WebApp.backend.habits.internal.domain.enums.HabitType;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,7 +17,4 @@ public interface HabitRepository extends JpaRepository<Habit, Long> {
 
     //Verifica si un habito con el mismo nombre ya existe.
     boolean existsByName(String name);
-
-    //Obtiene habitos por tipo.
-    List<Habit> findByType(HabitType type);
 }

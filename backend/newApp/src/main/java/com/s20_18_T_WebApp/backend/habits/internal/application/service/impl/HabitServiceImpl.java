@@ -70,6 +70,19 @@ public class HabitServiceImpl implements HabitService {
         return HabitResponseDto.fromEntity(searchedHabit);
     }
 
+    //TODO getHabitByName
+    public HabitResponseDto getHabitByName(String name) {
+
+    }
+
+    //TODO archiveHabit
+
+    //TODO unarchiveHabit
+
+    //TODO getHabitByType
+
+    //TODO updateHabit
+
     /**
      * Deletes a habit from the database by its id.
      *
