@@ -2,6 +2,7 @@ package com.s20_18_T_WebApp.backend.habits.internal.domain.entity.habitTypes;
 
 import com.s20_18_T_WebApp.backend.habits.internal.domain.entity.Habit;
 import com.s20_18_T_WebApp.backend.habits.internal.domain.enums.HabitType;
+import com.s20_18_T_WebApp.backend.habits.internal.domain.enums.LearningEnum;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,11 +24,13 @@ import java.util.Set;
 @SuperBuilder
 public class LearningHabit extends Habit {
 
-    private static final String DEFAULT_ICON = "iconoBadHabit";//TODO Definir icono a almacenar ? almacenarlo en clodinary.
+    private static final String DEFAULT_ICON = "LeaningHabitIcon";//TODO Definir icono a almacenar ? almacenarlo en clodinary.
     private static final String DEFAULT_COLOR = "#000000";//TODO definir colores de cada habito.
 
     @Column(name = "time_in_minutes")
-    private Integer timeInMinutes;
+    private Double value;
+
+    private LearningEnum units;
 
     /*
     @ElementCollection(fetch = FetchType.LAZY)
@@ -36,7 +39,7 @@ public class LearningHabit extends Habit {
     private Set<String> topics = new HashSet<>();
      */
 
-    public LearningHabit(String name, HabitType type, Set<DayOfWeek> dayOfWeeks, LocalDate localDate, Integer integer) {
+    public LearningHabit(String name, HabitType type, Set<DayOfWeek> dayOfWeeks, LocalDate localDate, Double value, LearningEnum units) {
     }
 
     @Override

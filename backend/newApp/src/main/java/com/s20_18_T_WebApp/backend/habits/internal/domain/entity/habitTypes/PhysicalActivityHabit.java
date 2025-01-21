@@ -3,6 +3,7 @@ package com.s20_18_T_WebApp.backend.habits.internal.domain.entity.habitTypes;
 
 import com.s20_18_T_WebApp.backend.habits.internal.domain.entity.Habit;
 import com.s20_18_T_WebApp.backend.habits.internal.domain.enums.HabitType;
+import com.s20_18_T_WebApp.backend.habits.internal.domain.enums.PhysicalActivityUnits;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
@@ -23,17 +24,17 @@ import java.util.Set;
 @SuperBuilder
 public class PhysicalActivityHabit extends Habit {
 
-    private static final String DEFAULT_ICON = "iconoBadHabit";//TODO Definir icono a almacenar ? almacenarlo en clodinary.
+    private static final String DEFAULT_ICON = "PhysicalActivityIcon";//TODO Definir icono a almacenar ? almacenarlo en clodinary.
     private static final String DEFAULT_COLOR = "#000000";//TODO definir colores de cada habito.
-//TODO EL VALOR SE DEFINE EN UN DOUBLE Y OTRA PARA EL TIPO DE UNIDAD(
-    @Column(name = "distance_in_km")
-    private Double disntanceInKm;
+    @Column(name = "value")
+    private Double value;
 
-    @Column(name = "duration_in_minutes")
-    private Integer durationInMinutes;//TIPO DE VALOR.(GENERAR UN ENUM PARA CADA TIPO
+    @Column(name = "units")
+    private PhysicalActivityUnits units;//TIPO DE VALOR.(GENERAR UN ENUM PARA CADA TIPO
 
-    public PhysicalActivityHabit(String name, HabitType type, Set<DayOfWeek> dayOfWeeks, LocalDate localDate, Double aDouble, Integer integer) {
+    public PhysicalActivityHabit(String name, HabitType type, Set<DayOfWeek> dayOfWeeks, LocalDate localDate, Double value, PhysicalActivityUnits physicalActivityUnits) {
     }
+
 
     @Override
     public String getIcon() {

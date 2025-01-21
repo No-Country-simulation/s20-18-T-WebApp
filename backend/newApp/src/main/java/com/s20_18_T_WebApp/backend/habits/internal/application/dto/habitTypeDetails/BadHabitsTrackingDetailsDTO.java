@@ -7,7 +7,7 @@ public record BadHabitsTrackingDetailsDTO(
 ) implements HabitDetailsDto {
     public static BadHabitsTrackingDetailsDTO fromEntity(BadHabitsTracking habit) {
         return new BadHabitsTrackingDetailsDTO(
-            habit.getDaysAvoided()
+            habit.getComment()
         );
     }
 }

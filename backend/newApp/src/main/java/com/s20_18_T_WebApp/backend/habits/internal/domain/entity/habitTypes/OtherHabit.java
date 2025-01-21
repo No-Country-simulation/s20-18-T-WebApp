@@ -22,7 +22,7 @@ import java.util.Set;
 @SuperBuilder
 public class OtherHabit extends Habit {
 
-    private static final String DEFAULT_ICON = "iconoBadHabit";//TODO Definir icono a almacenar ? almacenarlo en clodinary.
+    private static final String DEFAULT_ICON = "OtherHabitIcon";//TODO Definir icono a almacenar ? almacenarlo en clodinary.
     private static final String DEFAULT_COLOR = "#000000";//TODO definir colores de cada habito.
 
     @Column (name = "custom_notes", length = 500)

@@ -23,13 +23,13 @@ import java.util.Set;
 @SuperBuilder
 public class BadHabitsTracking extends Habit {
 
-    private static final String DEFAULT_ICON = "iconoBadHabit";//TODO Definir icono a almacenar ? almacenarlo en clodinary.
+    private static final String DEFAULT_ICON = "BadHabitIcon";//TODO Definir icono a almacenar ? almacenarlo en clodinary.
     private static final String DEFAULT_COLOR = "#000000";//TODO definir colores de cada habito.
 
     @Column(name = "days_avoided", nullable = false)
-    private Integer daysAvoided;
+    private String comment;//Hablar con Cesar, el puso tipo de dato minuto, horas, veces.
 
-    public BadHabitsTracking(String name, HabitType type, Set<DayOfWeek> dayOfWeeks, LocalDate localDate, Integer integer) {
+    public BadHabitsTracking(String name, HabitType type, Set<DayOfWeek> dayOfWeeks, LocalDate localDate, String comment) {
     }
 
     @Override

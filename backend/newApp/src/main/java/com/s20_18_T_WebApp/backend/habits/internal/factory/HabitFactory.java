@@ -3,6 +3,7 @@ package com.s20_18_T_WebApp.backend.habits.internal.factory;
 import com.s20_18_T_WebApp.backend.habits.internal.application.dto.HabitCreationRequest;
 import com.s20_18_T_WebApp.backend.habits.internal.domain.entity.Habit;
 import com.s20_18_T_WebApp.backend.habits.internal.domain.entity.habitTypes.*;
+import com.s20_18_T_WebApp.backend.habits.internal.domain.enums.*;
 
 public class HabitFactory {
 
@@ -37,8 +38,8 @@ public class HabitFactory {
                 request.type(),
                 request.scheduleDays(),
                 request.endDate(),
-                request.distanceInKm(),
-                request.timeInMinutes()
+                request.value(),
+                PhysicalActivityUnits.fromString(request.units())
         );
     }
 
@@ -55,8 +56,8 @@ public class HabitFactory {
                 request.type(), // Type of the habit
                 request.scheduleDays(), // Scheduled days for the habit
                 request.endDate(), // End date for the habit
-                request.calories(), // Calories associated with the habit
-                request.timeInMinutes() // Time in minutes for the habit
+                request.value(), // Value associated with the habit
+                HealthyLivingEnum.fromString(request.units()) // Units of the habit
         );
     }
 
@@ -67,20 +68,26 @@ public class HabitFactory {
      * @return A BadHabitsTracking object with the specified information.
      */
     private static BadHabitsTracking createBadHabitsTracking(HabitCreationRequest request) {
+        // Create and return a new BadHabitsTracking instance with the specified information.
         return new BadHabitsTracking(
-                request.name(),
-                request.type(),
-                request.scheduleDays(),
-                request.endDate(),
-                request.daysAvoided()
+                request.name(), // Name of the habit
+                request.type(), // Type of the habit
+                request.scheduleDays(), // Scheduled days for the habit
+                request.endDate(), // End date for the habit
+                request.customNotes() // Custom notes for the habit
         );
     }
 
     /**
      * Creates a Learning Habit based on the information in the request.
      *
-     * @param request The habit creation request containing the information needed to create a new habit.
-     * @return A LearningHabit object with the specified information.
+     * This method takes a HabitCreationRequest and extracts the necessary
+     * information to create a new LearningHabit instance.
+     *
+     * @param request The habit creation request containing the information
+     *                needed to create a new habit such as name, type,
+     *                schedule days, end date, value, and units.
+     * @return A LearningHabit object populated with the specified information.
      */
     private static LearningHabit createLearningHabit(HabitCreationRequest request) {
         // Create and return a new LearningHabit instance
@@ -88,33 +95,45 @@ public class HabitFactory {
                 request.name(), // Name of the habit
                 request.type(), // Type of the habit
                 request.scheduleDays(), // Scheduled days for the habit
-                request.endDate(), // End date for the habit
-                request.timeInMinutes() // Time in minutes for the habit
+                request.endDate(),// End date for the habit
+                request.value(),
+                LearningEnum.valueOf(request.units()) // Units of the habit
         );
     }
 
     /**
      * Creates a Social Activity Habit based on the information in the request.
      *
-     * @param request The habit creation request containing the information needed to create a new habit.
-     * @return A SocialActivityHabit object with the specified information.
+     * This method takes a HabitCreationRequest and extracts the necessary
+     * information to create a new SocialActivityHabit instance.
+     *
+     * @param request The habit creation request containing the information
+     *                needed to create a new habit such as name, type,
+     *                schedule days, end date, value, and units.
+     * @return A SocialActivityHabit object populated with the specified information.
      */
     private static SocialActivityHabit createSocialActivityHabit(HabitCreationRequest request) {
-        // Create and return a new SocialActivityHabit instance
+        // Create and return a new SocialActivityHabit instance using the data from the request
         return new SocialActivityHabit(
                 request.name(), // Name of the habit
                 request.type(), // Type of the habit
                 request.scheduleDays(), // Scheduled days for the habit
                 request.endDate(), // End date for the habit
-                request.timeInMinutes() // Time in minutes for the habit
+                request.value(), // Value associated with the habit
+                SocialActivityEnum.valueOf(request.units()) // Units of the habit
         );
     }
 
     /**
      * Creates a Finances Habit based on the information in the request.
      *
-     * @param request The habit creation request containing the information needed to create a new habit.
-     * @return A FinancesHabit object with the specified information.
+     * This method initializes a new instance of a FinancesHabit using the
+     * details provided in the HabitCreationRequest.
+     *
+     * @param request The habit creation request containing the information
+     *                needed to create a new habit such as name, type,
+     *                schedule days, end date, value, and units.
+     * @return A FinancesHabit object populated with the specified information.
      */
     private static FinancesHabit createFinancesHabit(HabitCreationRequest request) {
         // Create and return a new FinancesHabit instance
@@ -123,7 +142,8 @@ public class HabitFactory {
                 request.type(), // Type of the habit
                 request.scheduleDays(), // Scheduled days for the habit
                 request.endDate(), // End date for the habit
-                request.timeInMinutes() // Time in minutes for the habit
+                request.value(), // Value associated with the habit
+                FinancesEnum.valueOf(request.units()) // Financial units for the habit
         );
     }
 

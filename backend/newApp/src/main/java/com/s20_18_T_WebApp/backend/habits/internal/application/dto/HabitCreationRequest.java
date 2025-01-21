@@ -13,10 +13,8 @@ public record HabitCreationRequest (
         HabitType type,//TODO CATEGORY ID??
         Set<DayOfWeek> scheduleDays,//TODO: VA A LLEGAR COMO UN ARRAY [0, 1, 3]
         LocalDate endDate,
-        Double distanceInKm,
-        Integer timeInMinutes,
-        Integer calories,
-        Integer daysAvoided,
+        String units,
+        Double value,
         String customNotes
 ) {
 
