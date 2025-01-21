@@ -69,6 +69,11 @@ public class HabitServiceImpl implements HabitService {
         return HabitResponseDto.fromEntity(searchedHabit);
     }
 
+    //TODO getHabitByName
+    public HabitResponseDto getHabitByName(String name) {
+
+    }
+
     /**
      * Archives a habit in the database by its id.
      *
