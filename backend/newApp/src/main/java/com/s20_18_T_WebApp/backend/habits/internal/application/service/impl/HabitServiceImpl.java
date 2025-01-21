@@ -2,8 +2,10 @@ package com.s20_18_T_WebApp.backend.habits.internal.application.service.impl;
 
 import com.s20_18_T_WebApp.backend.habits.internal.application.dto.HabitCreationRequest;
 import com.s20_18_T_WebApp.backend.habits.internal.application.dto.HabitResponseDto;
+import com.s20_18_T_WebApp.backend.habits.internal.application.dto.HabitUpdateRequest;
 import com.s20_18_T_WebApp.backend.habits.internal.application.service.HabitService;
 import com.s20_18_T_WebApp.backend.habits.internal.domain.entity.Habit;
+import com.s20_18_T_WebApp.backend.habits.internal.domain.enums.HabitType;
 import com.s20_18_T_WebApp.backend.habits.internal.factory.HabitFactory;
 import com.s20_18_T_WebApp.backend.habits.internal.infra.persistence.HabitRepository;
 import jakarta.transaction.Transactional;
@@ -100,12 +102,45 @@ public class HabitServiceImpl implements HabitService {
         // Activate the habit (set archived status to false)
         habit.activate();
     }
+    /**
+     * Retrieves all habits of a given type from the database and converts them to a list of HabitResponseDto.
+     *
+     * @param type The type of habit to retrieve.
+     * @return A list of HabitResponseDto representing all habits of the given type.
+     */
+    public List<HabitResponseDto> getHabitByType(HabitType type) {
+        // Fetch all habits of the given type from the repository
+        List<Habit> habits = habitRepository.findByType(type);
 
-    //TODO unarchiveHabit
+        // Convert each Habit entity to a HabitResponseDto
+        List<HabitResponseDto> habitResponseDtos = new ArrayList<>();
+        for (Habit habit : habits) {
+            habitResponseDtos.add(HabitResponseDto.fromEntity(habit));
+        }
 
-    //TODO getHabitByType
+        // Return the list of HabitResponseDto
+        return habitResponseDtos;
+    }
 
-    //TODO updateHabit
+    /**
+     * Updates a habit in the database by its id.
+     *
+     * @param id     The id of the habit to update.
+     * @param request The request containing the information needed to update the habit.
+     */
+    @Override
+    public void updateHabit(Long id, HabitUpdateRequest request) { //TODO fix setValue and setUnit
+        // Retrieve the habit from the repository
+        Habit habit = habitRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Habit not found with id " + id));
+
+        // Update the habit with the given request
+        habit.setName(request.name());
+        habit.setScheduleDays(request.scheduleDays());
+        habit.setEndDate(request.endDate());
+        // Save the updated habit
+        habitRepository.save(habit);
+    }
 
     //TODO CALCULO DE PORCENTAJE
 

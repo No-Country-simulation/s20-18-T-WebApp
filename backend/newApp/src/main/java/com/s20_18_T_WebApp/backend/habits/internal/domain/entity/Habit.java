@@ -1,5 +1,6 @@
 package com.s20_18_T_WebApp.backend.habits.internal.domain.entity;
 
+import com.s20_18_T_WebApp.backend.habits.internal.application.dto.HabitCreationRequest;
 import com.s20_18_T_WebApp.backend.habits.internal.domain.enums.HabitType;
 import com.s20_18_T_WebApp.backend.shared.domain.entity.BaseEntity;
 import jakarta.persistence.*;

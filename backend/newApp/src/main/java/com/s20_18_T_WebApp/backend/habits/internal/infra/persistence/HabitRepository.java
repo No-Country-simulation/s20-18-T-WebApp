@@ -17,4 +17,6 @@ public interface HabitRepository extends JpaRepository<Habit, Long> {
 
     //Verifica si un habito con el mismo nombre ya existe.
     boolean existsByName(String name);
+
+    List<Habit> findByType(HabitType type);
 }
