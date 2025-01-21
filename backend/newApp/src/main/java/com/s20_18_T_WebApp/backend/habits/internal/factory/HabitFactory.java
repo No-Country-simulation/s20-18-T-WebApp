@@ -39,7 +39,7 @@ public class HabitFactory {
                 request.scheduleDays(),
                 request.endDate(),
                 request.value(),
-                PhysicalActivityUnits.fromString(request.units())
+                PhysicalActivityEnum.fromString(request.units())
         );
     }
 

@@ -3,7 +3,7 @@ package com.s20_18_T_WebApp.backend.habits.internal.domain.entity.habitTypes;
 
 import com.s20_18_T_WebApp.backend.habits.internal.domain.entity.Habit;
 import com.s20_18_T_WebApp.backend.habits.internal.domain.enums.HabitType;
-import com.s20_18_T_WebApp.backend.habits.internal.domain.enums.PhysicalActivityUnits;
+import com.s20_18_T_WebApp.backend.habits.internal.domain.enums.PhysicalActivityEnum;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
@@ -30,9 +30,9 @@ public class PhysicalActivityHabit extends Habit {
     private Double value;
 
     @Column(name = "units")
-    private PhysicalActivityUnits units;//TIPO DE VALOR.(GENERAR UN ENUM PARA CADA TIPO
+    private PhysicalActivityEnum units;//TIPO DE VALOR.(GENERAR UN ENUM PARA CADA TIPO
 
-    public PhysicalActivityHabit(String name, HabitType type, Set<DayOfWeek> dayOfWeeks, LocalDate localDate, Double value, PhysicalActivityUnits physicalActivityUnits) {
+    public PhysicalActivityHabit(String name, HabitType type, Set<DayOfWeek> dayOfWeeks, LocalDate localDate, Double value, PhysicalActivityEnum physicalActivityEnum) {
     }
 
 

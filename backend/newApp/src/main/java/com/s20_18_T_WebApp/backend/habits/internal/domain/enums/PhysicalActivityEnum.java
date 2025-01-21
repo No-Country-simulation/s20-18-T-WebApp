@@ -1,6 +1,6 @@
 package com.s20_18_T_WebApp.backend.habits.internal.domain.enums;
 
-public enum PhysicalActivityUnits {
+public enum PhysicalActivityEnum {
     METERS("Metros"),
     KILOMETERS("Kilometros"),
     MINUTES("Minutos"),
@@ -10,7 +10,7 @@ public enum PhysicalActivityUnits {
 
     private final String translation;
 
-    PhysicalActivityUnits(String translation) {
+    PhysicalActivityEnum(String translation) {
         this.translation = translation;
     }
 
@@ -26,8 +26,8 @@ public enum PhysicalActivityUnits {
      * @return the matching PhysicalActivityUnits enum value
      * @throws IllegalArgumentException if no matching value is found
      */
-    public static PhysicalActivityUnits fromString(String value) {
-        for (PhysicalActivityUnits unit : PhysicalActivityUnits.values()) {
+    public static PhysicalActivityEnum fromString(String value) {
+        for (PhysicalActivityEnum unit : PhysicalActivityEnum.values()) {
             if (unit.name().equalsIgnoreCase(value)) {
                 return unit;
             }
