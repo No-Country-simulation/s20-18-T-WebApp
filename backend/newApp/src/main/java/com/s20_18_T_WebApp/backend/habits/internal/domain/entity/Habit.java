@@ -18,7 +18,9 @@ import java.util.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public abstract class Habit extends BaseEntity {
+public abstract class Habit extends BaseEntity { //TODO ALMACENAR LAS METAS A ALCANZAR PARA CADA HABITO(EJ ACTIVICAD FISICA CORRER 2KM POR DIA) y tipo de unidad en un string.
+    //TODO INCORPORAR EL ID DEL HABITO EN TODO DTO.
+    //TODO tabla de fechas de cumplimiento. Ej: fecha - completado
 
     @Column(name = "name", nullable = false, length = 100)
     private String name;//TODO default name segun tipo de habito.

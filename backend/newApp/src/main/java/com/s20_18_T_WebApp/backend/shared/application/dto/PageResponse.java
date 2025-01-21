@@ -22,25 +22,30 @@ public class PageResponse<T> {
         this.pagination = pagination;
     }
 
+
     /**
-     * Creates a new PageResponse object from a Page object.
+     * Converts a Page object to a PageResponse object.
      *
-     * @param page The page object to create a PageResponse from.
-     * @param <T>  The type of objects in the page.
-     * @return A new PageResponse object.
+     * @param page The Page object containing the content and pagination information.
+     * @param <T>  The type of elements in the page content.
+     * @return A PageResponse object containing the content and pagination metadata.
      */
     public static <T> PageResponse<T> from(Page<T> page) {
-        return new PageResponse<>(
-                page.getContent(),
-                new PaginationMetadata(
-                        page.getNumber(),
-                        page.getSize(),
-                        page.getTotalElements(),
-                        page.getTotalPages(),
-                        page.isFirst(),
-                        page.isLast()
-                )
+        // Extract the content from the Page object
+        List<T> content = page.getContent();
+
+        // Create PaginationMetadata using the Page object's pagination details
+        PaginationMetadata pagination = new PaginationMetadata(
+                page.getNumber(),     // Current page number
+                page.getSize(),       // Size of the page
+                page.getTotalElements(), // Total number of elements
+                page.getTotalPages(), // Total number of pages
+                page.isFirst(),       // Is this the first page?
+                page.isLast()         // Is this the last page?
         );
+
+        // Return a new PageResponse object with content and pagination metadata
+        return new PageResponse<>(content, pagination);
     }
 
     /**

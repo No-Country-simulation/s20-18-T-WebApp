@@ -10,8 +10,8 @@ import java.util.Set;
 public record HabitCreationRequest (
 
         String name,
-        HabitType type,
-        Set<DayOfWeek> scheduleDays,
+        HabitType type,//TODO CATEGORY ID??
+        Set<DayOfWeek> scheduleDays,//TODO: VA A LLEGAR COMO UN ARRAY [0, 1, 3]
         LocalDate endDate,
         Double distanceInKm,
         Integer timeInMinutes,

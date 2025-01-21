@@ -18,5 +18,9 @@ public interface HabitService {
 
     HabitResponseDto getHabitById(Long id);
 
+    void archiveHabit(Long id);
+
+    void unarchiveHabit(Long id);
+
     void deleteHabit(Long id);
 }

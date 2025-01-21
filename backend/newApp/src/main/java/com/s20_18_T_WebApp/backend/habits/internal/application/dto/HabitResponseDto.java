@@ -26,7 +26,7 @@ public record HabitResponseDto(
                 habit.getId(),
                 habit.getName(),
                 habit.getType(),
-                habit.getScheduleDays(),
+                habit.getScheduleDays(),//TODO convertir a un array numerico [0 ...6]
                 habit.getCurrentStreak(),
                 habit.getLongestStreak(),
                 habit.isArchived(),

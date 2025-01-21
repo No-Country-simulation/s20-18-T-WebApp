@@ -75,13 +75,49 @@ public class HabitServiceImpl implements HabitService {
 
     }
 
-    //TODO archiveHabit
+    /**
+     * Archives a habit in the database by its id.
+     *
+     * @param id The id of the habit to archive.
+     * @throws RuntimeException if no habit is found with the given id.
+     */
+    @Override
+    public void archiveHabit(Long id) {
+        // Retrieve the habit from the repository
+        Habit habit = habitRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Habit not found with id. " + id));
+
+        // Archive the habit
+        habit.archive();
+    }
+
+    /**
+     * Unarchives a habit in the database by its id.
+     *
+     * @param id The id of the habit to unarchive.
+     * @throws RuntimeException if no habit is found with the given id.
+     */
+    @Override
+    public void unarchiveHabit(Long id) {
+        // Retrieve the habit from the repository
+        Habit habit = habitRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Habit not found with id. " + id));
+
+        // Activate the habit (set archived status to false)
+        habit.activate();
+    }
 
     //TODO unarchiveHabit
 
     //TODO getHabitByType
 
     //TODO updateHabit
+
+    //TODO CALCULO DE PORCENTAJE
+
+    //TODO devolver estatus por dia. (pendiente, completado, fallado)
+
+    //TODO GETALLCATEGORIAS
 
     /**
      * Deletes a habit from the database by its id.
