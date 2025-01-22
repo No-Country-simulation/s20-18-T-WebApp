@@ -37,4 +37,6 @@ public class DailyProgress extends BaseEntity {
     public void updateSuccess() {
         this.status = ProgressStatus.COMPLETED;
     }
+
+    
 }

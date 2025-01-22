@@ -148,6 +148,7 @@ public class HabitServiceImpl implements HabitService {
     }
 
     //TODO devolver estatus por dia. (pendiente, completado, fallado)
+    //TODO servicio para falla automatica cuando el dia programado no se cumple y ya termino dicho dia.
 
     //TODO GETALLCATEGORIAS
 
