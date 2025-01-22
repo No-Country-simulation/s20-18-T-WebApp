@@ -2,18 +2,27 @@ package com.s20_18_T_WebApp.backend.habits.internal.application.service.impl;
 
 import com.s20_18_T_WebApp.backend.habits.internal.application.dto.HabitCreationRequest;
 import com.s20_18_T_WebApp.backend.habits.internal.application.dto.HabitResponseDto;
+import com.s20_18_T_WebApp.backend.habits.internal.application.dto.HabitTypeDTO;
 import com.s20_18_T_WebApp.backend.habits.internal.application.dto.HabitUpdateRequest;
 import com.s20_18_T_WebApp.backend.habits.internal.application.service.HabitService;
+import com.s20_18_T_WebApp.backend.habits.internal.domain.entity.DailyProgress;
 import com.s20_18_T_WebApp.backend.habits.internal.domain.entity.Habit;
 import com.s20_18_T_WebApp.backend.habits.internal.domain.enums.HabitType;
+import com.s20_18_T_WebApp.backend.habits.internal.domain.enums.ProgressStatus;
 import com.s20_18_T_WebApp.backend.habits.internal.factory.HabitFactory;
+import com.s20_18_T_WebApp.backend.habits.internal.infra.persistence.DailyProgressRepository;
 import com.s20_18_T_WebApp.backend.habits.internal.infra.persistence.HabitRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Stream;
 
 @Service
 @Transactional
@@ -21,6 +30,7 @@ import java.util.List;
 public class HabitServiceImpl implements HabitService {
 
     private final HabitRepository habitRepository;
+    private final DailyProgressRepository dailyProgressRepository;
 
     /**
      * Creates a new habit based on the given request and saves it to the database.
@@ -142,15 +152,53 @@ public class HabitServiceImpl implements HabitService {
         habitRepository.save(habit);
     }
 
-    //TODO CALCULO DE PORCENTAJE DE CUMPLIMIENTO
-    public double calculateCompletionPercentage(Long id) {
+    /**
+     * Marks missed scheduled days for a habit as failed.
+     * <p>
+     * This method iterates over all days from the habit's creation date up to the current date.
+     * It checks if each day is a scheduled day for the habit. If a scheduled day does not have
+     * a recorded daily progress, it creates a new failed daily progress record for that day.
+     * </p>
+     *
+     * @param habitId The id of the habit for which to mark missed scheduled days.
+     * @throws RuntimeException if no habit is found with the given id.
+     */
+    @Override
+    public void markMissedScheduledDays(Long habitId) {
+        // Retrieve the habit from the repository
+        Habit habit = habitRepository.findById(habitId)
+                .orElseThrow(() -> new RuntimeException("Habit not found with id " + habitId));
 
+        // Get the scheduled days for the habit
+        Set<DayOfWeek> scheduleDays = habit.getScheduleDays();
+
+        // Define the start date as the habit's creation date and the end date as the current date
+        LocalDate startDate = LocalDate.from(habit.getCreatedAt());
+        LocalDate actualDate = LocalDate.now();
+
+        // Iterate through each day from the start date to the current date
+        for (LocalDate date = startDate; !date.isAfter(actualDate); date = date.plusDays(1)) {
+            // Check if the current day is a scheduled day for the habit
+            if (scheduleDays.contains(date.getDayOfWeek())) {
+                // Check if there's already a daily progress record for the current day
+                DailyProgress missedProgress = dailyProgressRepository.findByHabitAndDate(habit, date);
+                if (missedProgress == null) {
+                    // Create and save a new failed daily progress record for the current day
+                    DailyProgress dailyProgress = new DailyProgress();
+                    dailyProgress.setHabit(habit);
+                    dailyProgress.setDate(date);
+                    dailyProgress.setStatus(ProgressStatus.FAILED);
+                    dailyProgressRepository.save(dailyProgress);
+                }
+            }
+        }
     }
 
-    //TODO devolver estatus por dia. (pendiente, completado, fallado)
-    //TODO servicio para falla automatica cuando el dia programado no se cumple y ya termino dicho dia.
-
-    //TODO GETALLCATEGORIAS
+    @Override
+    public Stream<HabitTypeDTO> getAllHabitTypes() {
+        return Arrays.stream(HabitType.values())
+                .map(habitType -> new HabitTypeDTO(habitType.toString(), habitType.getTranslation()));
+    }
 
     /**
      * Deletes a habit from the database by its id.
