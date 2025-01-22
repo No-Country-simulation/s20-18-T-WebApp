@@ -18,7 +18,9 @@ import java.util.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public abstract class Habit extends BaseEntity {
+public abstract class Habit extends BaseEntity { //TODO ALMACENAR LAS METAS A ALCANZAR PARA CADA HABITO(EJ ACTIVICAD FISICA CORRER 2KM POR DIA) y tipo de unidad en un string.
+    //TODO INCORPORAR EL ID DEL HABITO EN TODO DTO.
+    //TODO tabla de fechas de cumplimiento. Ej: fecha - completado
 
     @Column(name = "name", nullable = false, length = 100)
     private String name;//TODO default name segun tipo de habito.
@@ -42,8 +44,11 @@ public abstract class Habit extends BaseEntity {
     @Column(nullable = false)
     private boolean archived = false;
 
+    @Column(name = "end_date")
     private LocalDate endDate;//A menos que se especifique se considera para siempre.
 
+    //TODO Agregar alguna propiedad que almacene los dias y si estos fueron cumplidos o fallados. Tambien tengo que hacer un metodo que calacule que dias del futuro van a marcarcarse como pendientes y cuales no. Para mostrarlos en un calendario.
+    List<DailyProgress> progress = new ArrayList<>();
 
     public Habit (String name, HabitType type, Set<DayOfWeek> scheduleDays) {
         if (name == null || name.trim().isEmpty()) {
@@ -63,39 +68,6 @@ public abstract class Habit extends BaseEntity {
         this.currentStreak = 0;
         this.longestStreak = 0;
     }
-
-    /**
-     * Updates the streak days based on the daily progress data.
-     */
-    public void updateStreakDays(Set<DailyProgress> progressData) {
-        if (progressData == null || progressData.isEmpty()) {
-            this.currentStreak = 0;
-            return;
-        }
-
-        int current = 0;
-        int longest = 0;
-        boolean isConsecutive = true;
-
-        // Example streak calculation logic
-        for (DailyProgress progress : progressData) {
-            if (progress.isCompleted()) {
-                if (isConsecutive) {
-                    current++;
-                } else {
-                    current = 1;
-                    isConsecutive = true;
-                }
-                longest = Math.max(longest, current);
-            } else {
-                isConsecutive = false;
-            }
-        }
-
-        this.currentStreak = current;
-        this.longestStreak = longest;
-    }
-
     /**
      * Checks if the habit should be archived.
      * <p>
@@ -129,6 +101,10 @@ public abstract class Habit extends BaseEntity {
         // Set the habit's archived status to false
         this.archived = false;
     }
+
+    public abstract String getIcon();
+
+    public abstract String getColor();
 }
 
 /*

@@ -22,4 +22,13 @@ public enum HabitType {
     public String getTranslation() {
         return translation;
     }
+
+    public static HabitType fromString(String value) {
+        for (HabitType habitType : HabitType.values()) {
+            if (habitType.name().equalsIgnoreCase(value)) {
+                return habitType;
+            }
+        }
+        throw new IllegalArgumentException("Invalid HabitType value: " + value);
+    }
 }
