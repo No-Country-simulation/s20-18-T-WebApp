@@ -29,6 +29,8 @@ public interface HabitService {
 
     void markMissedScheduledDays(Long habitId);
 
+    int[] calculateStreaks(Long habitId);
+
     Stream<HabitTypeDTO> getAllHabitTypes();
 
     void deleteHabit(Long id);

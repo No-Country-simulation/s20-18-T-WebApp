@@ -6,6 +6,8 @@ import com.s20_18_T_WebApp.backend.habits.internal.domain.enums.ProgressStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
@@ -23,4 +25,7 @@ public interface DailyProgressRepository extends JpaRepository<DailyProgress, Lo
     long countByHabit (Habit habit);
 
     DailyProgress findByHabitAndDate(Habit habit, LocalDate date);
+
+    @Query("SELECT dp FROM DailyProgress dp WHERE dp.habit = :habit ORDER BY dp.date ASC")
+    List<DailyProgress> findByHabitOrderByDateAsc(@Param("habit") Habit habit);
 }

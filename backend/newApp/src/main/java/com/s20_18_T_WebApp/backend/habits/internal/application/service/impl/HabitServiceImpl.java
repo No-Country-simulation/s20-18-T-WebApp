@@ -194,6 +194,41 @@ public class HabitServiceImpl implements HabitService {
         }
     }
 
+    /**
+     * Calculates the current and longest streak for a given habit.
+     * A streak is a sequence of completed daily progress records.
+     * The current streak is the length of the current sequence of completed daily progress records.
+     * The longest streak is the maximum length of any sequence of completed daily progress records
+     * for the given habit.
+     *
+     * @param habitId The id of the habit for which to calculate the streaks.
+     * @return An array of two integers, where the first element is the current streak and the second element is the longest streak.
+     * @throws RuntimeException if no habit is found with the given id.
+     */
+    @Override
+    public int[] calculateStreaks(Long habitId) {
+        Habit habit = habitRepository.findById(habitId)
+                .orElseThrow(() -> new RuntimeException("Habit not found with id " + habitId));
+
+        List<DailyProgress> progressList = dailyProgressRepository.findByHabitOrderByDateAsc(habit);
+
+        int currentStreak = 0;
+        int maxStreak = 0;
+        int tempStreak = 0;
+
+        for (int i = progressList.size() - 1; i >= 0; i--) {
+            DailyProgress progress = progressList.get(i);
+            if (progress.getStatus() == ProgressStatus.COMPLETED) {
+                tempStreak++;
+                currentStreak = tempStreak;
+                maxStreak = Math.max(maxStreak, tempStreak);
+            } else {
+                tempStreak = 0;
+            }
+        }
+        return new int[]{currentStreak, maxStreak};
+    }
+
     @Override
     public Stream<HabitTypeDTO> getAllHabitTypes() {
         return Arrays.stream(HabitType.values())

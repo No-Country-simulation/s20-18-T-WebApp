@@ -68,39 +68,6 @@ public abstract class Habit extends BaseEntity { //TODO ALMACENAR LAS METAS A AL
         this.currentStreak = 0;
         this.longestStreak = 0;
     }
-
-    /**
-     * Updates the streak days based on the daily progress data.
-     */
-    public void updateStreakDays(Set<DailyProgress> progressData) {
-        if (progressData == null || progressData.isEmpty()) {
-            this.currentStreak = 0;
-            return;
-        }
-
-        int current = 0;
-        int longest = 0;
-        boolean isConsecutive = true;
-
-        // Example streak calculation logic
-        for (DailyProgress progress : progressData) {
-            if (progress.isCompleted()) {
-                if (isConsecutive) {
-                    current++;
-                } else {
-                    current = 1;
-                    isConsecutive = true;
-                }
-                longest = Math.max(longest, current);
-            } else {
-                isConsecutive = false;
-            }
-        }
-
-        this.currentStreak = current;
-        this.longestStreak = longest;
-    }
-
     /**
      * Checks if the habit should be archived.
      * <p>
