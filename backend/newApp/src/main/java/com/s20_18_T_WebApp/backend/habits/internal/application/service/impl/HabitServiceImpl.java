@@ -142,7 +142,10 @@ public class HabitServiceImpl implements HabitService {
         habitRepository.save(habit);
     }
 
-    //TODO CALCULO DE PORCENTAJE
+    //TODO CALCULO DE PORCENTAJE DE CUMPLIMIENTO
+    public double calculateCompletionPercentage(Long id) {
+
+    }
 
     //TODO devolver estatus por dia. (pendiente, completado, fallado)
 

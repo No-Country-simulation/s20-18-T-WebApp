@@ -1,6 +1,5 @@
 package com.s20_18_T_WebApp.backend.habits.internal.domain.entity;
 
-import com.s20_18_T_WebApp.backend.habits.internal.application.dto.HabitCreationRequest;
 import com.s20_18_T_WebApp.backend.habits.internal.domain.enums.HabitType;
 import com.s20_18_T_WebApp.backend.shared.domain.entity.BaseEntity;
 import jakarta.persistence.*;
@@ -48,6 +47,8 @@ public abstract class Habit extends BaseEntity { //TODO ALMACENAR LAS METAS A AL
     @Column(name = "end_date")
     private LocalDate endDate;//A menos que se especifique se considera para siempre.
 
+    //TODO Agregar alguna propiedad que almacene los dias y si estos fueron cumplidos o fallados. Tambien tengo que hacer un metodo que calacule que dias del futuro van a marcarcarse como pendientes y cuales no. Para mostrarlos en un calendario.
+    List<DailyProgress> progress = new ArrayList<>();
 
     public Habit (String name, HabitType type, Set<DayOfWeek> scheduleDays) {
         if (name == null || name.trim().isEmpty()) {
