@@ -3,7 +3,7 @@ package com.s20_18_T_WebApp.backend.habits.internal.domain.enums;
 public enum ProgressStatus {
     SCHEDULED("Agendado"),
     COMPLETED("Completado"),
-    FAILED("Fallido")
+    FAILED("Fallido");
 
     private final String translation;
 
