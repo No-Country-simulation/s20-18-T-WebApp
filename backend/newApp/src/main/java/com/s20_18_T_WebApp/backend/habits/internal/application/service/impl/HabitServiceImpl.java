@@ -39,9 +39,11 @@ public class HabitServiceImpl implements HabitService {
      * @return The created habit.
      */
     @Override
-    public Habit createHabit(HabitCreationRequest request) {
+    public HabitResponseDto createHabit(HabitCreationRequest request) {
         Habit habit = HabitFactory.createHabit(request);
-        return habitRepository.save(habit);
+        habitRepository.save(habit);
+
+        return HabitResponseDto.fromEntity(habit);
     }
 
     /**
@@ -139,7 +141,7 @@ public class HabitServiceImpl implements HabitService {
      * @param request The request containing the information needed to update the habit.
      */
     @Override
-    public void updateHabit(Long id, HabitUpdateRequest request) { //TODO fix setValue and setUnit
+    public HabitResponseDto updateHabit(Long id, HabitUpdateRequest request) { //TODO fix setValue and setUnit
         // Retrieve the habit from the repository
         Habit habit = habitRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Habit not found with id " + id));
@@ -149,7 +151,8 @@ public class HabitServiceImpl implements HabitService {
         habit.setScheduleDays(request.scheduleDays());
         habit.setEndDate(request.endDate());
         // Save the updated habit
-        habitRepository.save(habit);
+        Habit updatedHabit = habitRepository.save(habit);
+        return HabitResponseDto.fromEntity(updatedHabit);
     }
 
     /**
@@ -241,8 +244,9 @@ public class HabitServiceImpl implements HabitService {
      * @param id The id of the habit to delete.
      */
     @Override
-    public void deleteHabit(Long id) {
+    public String deleteHabit(Long id) {
         // Delete the habit from the repository
         habitRepository.deleteById(id);
+        return "Deleted habit with id " + id;
     }
 }

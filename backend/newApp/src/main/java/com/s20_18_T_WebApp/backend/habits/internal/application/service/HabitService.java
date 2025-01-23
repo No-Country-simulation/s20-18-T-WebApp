@@ -15,7 +15,7 @@ public interface HabitService {
     /*
     TODO createNewHabit ,getAllHabts, getHabitDetailsById, getHabitByName, updateHabit, archiveHabit, unarchiveHabit, deleteHabit
      */
-     Habit createHabit (HabitCreationRequest request);
+     HabitResponseDto createHabit (HabitCreationRequest request);
 
     List<HabitResponseDto> getAllHabits();
 
@@ -25,7 +25,7 @@ public interface HabitService {
 
     void unarchiveHabit(Long id);
 
-    void updateHabit(Long id, HabitUpdateRequest request);
+    HabitResponseDto updateHabit(Long id, HabitUpdateRequest request);
 
     void markMissedScheduledDays(Long habitId);
 
@@ -33,5 +33,5 @@ public interface HabitService {
 
     Stream<HabitTypeDTO> getAllHabitTypes();
 
-    void deleteHabit(Long id);
+    String deleteHabit(Long id);
 }
