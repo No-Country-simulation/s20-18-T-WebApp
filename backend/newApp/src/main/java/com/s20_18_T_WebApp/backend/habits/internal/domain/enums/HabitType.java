@@ -19,6 +19,15 @@ public enum HabitType {
         this.translation = translation;
     }
 
+    public static boolean isValid(String type) {
+        for (HabitType habitType : HabitType.values()) {
+            if (habitType.name().equalsIgnoreCase(type)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public String getTranslation() {
         return translation;
     }
