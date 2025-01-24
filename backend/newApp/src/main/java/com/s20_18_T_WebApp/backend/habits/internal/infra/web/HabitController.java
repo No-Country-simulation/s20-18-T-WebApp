@@ -110,4 +110,16 @@ public class HabitController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
     }
+
+    @PostMapping("/{habitId}/archive")
+    public ResponseEntity<String> archiveHabit(@PathVariable("habitId") Long habitId) {
+        habitService.archiveHabit(habitId);
+        return ResponseEntity.ok("Habit archived successfully");
+    }
+
+    @PostMapping("/{habitId}/unarchive")
+    public ResponseEntity<String> unarchiveHabit(@PathVariable("habitId") Long habitId) {
+        habitService.unarchiveHabit(habitId);
+        return ResponseEntity.ok("Habit unarchived successfully");
+    }
 }
