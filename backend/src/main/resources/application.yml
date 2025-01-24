@@ -1,12 +1,9 @@
 spring:
   datasource:
-    url: jdbc:postgresql://172.27.0.2:5432/postgres_habits
+    url: jdbc:postgresql://postgres:5433/postgres_habits
     username: admin
     password: admin
     driver-class-name: org.postgresql.Driver
-  docker:
-    compose:
-      file: backend/docker-compose.yaml
   jpa:
     hibernate:
       ddl-auto: update
