@@ -11,14 +11,14 @@ const theme = createTheme({
   palette: {
     mode: "light", // Cambia a "dark" para tema oscuro
     primary: {
-      main: "#1976d2", // Azul por defecto
+      main: "#3868F0", // Azul por defecto
     },
     secondary: {
       main: "#f50057", // Rosa
     },
   },
   typography: {
-    fontFamily: 'Outfit, sans-serif', // Reemplaza con tu fuente deseada font-family: "Outfit", serif;
+    fontFamily: 'Outfit, Arial, sans-serif', // Reemplaza con tu fuente deseada font-family: "Outfit", serif;
   },
 });
 
