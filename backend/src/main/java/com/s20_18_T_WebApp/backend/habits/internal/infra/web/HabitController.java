@@ -9,7 +9,6 @@ import com.s20_18_T_WebApp.backend.habits.internal.application.service.HabitSear
 import com.s20_18_T_WebApp.backend.habits.internal.application.service.HabitService;
 import com.s20_18_T_WebApp.backend.habits.internal.domain.enums.HabitType;
 import com.s20_18_T_WebApp.backend.shared.application.dto.PageResponse;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -44,7 +43,7 @@ public class HabitController {
         return ResponseEntity.ok(habitService.getHabitById(id));
     }
 
-    @PostMapping("/update/{id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity<HabitResponseDto> updateHabit(@PathVariable("id") Long id, @RequestBody HabitUpdateRequest request) {
         return ResponseEntity.ok(habitService.updateHabit(id, request));
     }
@@ -73,7 +72,7 @@ public class HabitController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<PageResponse<HabitResponseDto>> pageSearch(
+    public ResponseEntity<PageResponse<HabitResponseDto>> habitSearch(
             @RequestParam(required = false, value = "name") String name,
             @RequestParam(required = false, value = "type") String type,
             @RequestParam(required = false, value = "scheduleDays") Set<DayOfWeek> scheduleDays,
