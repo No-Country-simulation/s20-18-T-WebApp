@@ -17,8 +17,6 @@ import java.util.List;
 public interface DailyProgressRepository extends JpaRepository<DailyProgress, Long> {
     Page<DailyProgress> findByHabit (Habit habit, Pageable pageable);
 
-    Page<DailyProgress> findByHabitIdAndDateBetween(Long habitId, LocalDate startDate, Pageable pageable);
-
     long countByHabitAndStatus(Habit habit, ProgressStatus status);
 
     long countByHabit (Habit habit);

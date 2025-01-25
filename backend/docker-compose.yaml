@@ -10,7 +10,7 @@ services:
       - db
     environment:
       - SPRING_PROFILES_ACTIVE=docker
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/postgres_habits
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/postgres_habits
       - SPRING_DATASOURCE_USERNAME=admin
       - SPRING_DATASOURCE_PASSWORD=admin
     networks:
