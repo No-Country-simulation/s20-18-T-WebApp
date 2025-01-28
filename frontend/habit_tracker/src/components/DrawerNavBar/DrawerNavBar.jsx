@@ -19,18 +19,29 @@ import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom'; 
 import HabitFormModal from '../HabitFormModal/HabitFormModal';
+import { useUsers } from "../../contexts/UsersContext";
 
+const mapLevelName = [
+  'Principiante', 'Intermedio', 'Profesional', 'Experto'
+]
 
-const DrawerNavBar = ({user}) => {
+const DrawerNavBar = () => {
   const [selectedIndex, setSelectedIndex] = useState(0); 
   const location = useLocation(); 
-
-  const userAvatarUrl = `./images/${user.avatar}`;
+  const { users, isLoading } = useUsers(); 
+  const [user, setUser] = useState({})
+  
+  useEffect(() => {
+    //console.log(users);
+    if (!isLoading) {
+      setUser(users[0]);
+    }    
+  }, [isLoading]);
+  
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const handleOpenModal = () => {
-    console.log('click en crear habito')
+  const handleOpenModal = () => {    
     setIsModalOpen(true);
   };
 
@@ -56,18 +67,25 @@ const DrawerNavBar = ({user}) => {
      }
    }, [location]);
 
+if (isLoading) {
+  return(
+    <div>Cargando...
+    </div>
+  )
+}
+
   return (
     <div >      
       <Box sx={{ display: 'flex', alignItems: 'center', p: 2 }}>
         <Avatar sx={{ mr: 2 }}>          
-          <img src={userAvatarUrl} alt="Avatar del usuario" 
+          <img src={`./images/${user.avatar}`} alt={user.name}
             width="100%" height="auto"
           />
         </Avatar>
         <div>
           <Typography fontWeight="bold">{user.name}</Typography>
           <Typography variant="body2" color="text.secondary">
-            {user.email}
+            {mapLevelName[user.level]}
           </Typography>
         </div>
       </Box>

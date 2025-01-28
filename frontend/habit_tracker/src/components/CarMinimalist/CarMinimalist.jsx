@@ -11,7 +11,7 @@ import MenuBookOutlinedIcon from '@mui/icons-material/MenuBookOutlined';
 import FlatwareOutlinedIcon from '@mui/icons-material/FlatwareOutlined';
 import AttachFileOutlinedIcon from '@mui/icons-material/AttachFileOutlined';
 
-import CalendarRowWeekDays from "../CalendarRowWeekDays/CalendarRowWeekDays";
+// import CalendarRowWeekDays from "../CalendarRowWeekDays/CalendarRowWeekDays";
 
 const iconMap = {
   DirectionsRunIcon: <DirectionsRunIcon />,
@@ -22,7 +22,7 @@ const iconMap = {
 
 import DayOfWeekChip from './DayOfWeekChip';
 
-export const CalendarWeekly = ({ habit, tasks }) => {
+export const CarMinimalist = ({ habit, tasks }) => {
   const [ showCompleteButton, setShowCompleteButton] = useState(true);
     const {
         icon,
@@ -145,7 +145,7 @@ export const CalendarWeekly = ({ habit, tasks }) => {
 
         {/* Second Row */}
         <Box sx={{ display: "flex",justifyContent: "space-between" }} >          
-           <CalendarRowWeekDays  tasks={tasks} daysWeekSet={daysWeekSet} />           
+          {/* <CalendarRowWeekDays  tasks={tasks} daysWeekSet={daysWeekSet} />           */}
         </Box>
         <Divider orientation="horizontal" variant="middle" flexItem />
 

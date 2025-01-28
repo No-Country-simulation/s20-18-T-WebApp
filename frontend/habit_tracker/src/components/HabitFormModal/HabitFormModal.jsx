@@ -41,8 +41,11 @@ const style = {
     {id: 2, name: "Aprendizaje/Estudio", units: ['Minutos', 'Horas', 'Páginas', 'Capítulos', 'Veces']},    
     {id: 3, name: "Finanzas", units: ['Minutos', 'Horas', 'Veces']},    
     {id: 4, name: "Actividades Sociales", units: ['Minutos', 'Horas', 'Veces']},    
-    {id: 5, name: "Otro hábito", units: ['Metros', 'Kilómetros', 'Horas', 'Minutos', 'Páginas', 'Capítulos', 'Veces']}    
-    ]
+    {id: 5, name: "Vida saludable", units: ['Metros', 'Kilómetros', 'Horas', 'Minutos', 'Páginas', 'Capítulos', 'Veces']},
+    {id: 6, name: "Otro hábito", units: ['Metros', 'Kilómetros', 'Horas', 'Minutos', 'Páginas', 'Capítulos', 'Veces']},
+    ];
+
+
 
 const HabitFormModal = ({ open, handleClose }) => {
   const [categoryId, setCategoryId] = useState('');
@@ -98,14 +101,29 @@ console.log(categoryId)
     }
 
     // Handle form submission logic here
+    /*
+    PHYSICAL_ACTIVITY 
+  {
+  name: PHYSICAL_ACTIVITY,
+  tranlation: "Actividad Fisica",
+  units: km, minutes, etc.
+  PHYSICAL_ACTIVITY("Actividad Fisica"),//km o minutos.
+      HEALTHY_LIVING("Vida Saludable"),//calorias, minutos por dia.
+      BAD_HABITS("Malos Habitos"),//malos habitos. //mide la cantidad de dias que estas evitando caer en cada mal habito.
+      LEARNING("Aprendizaje"), //minutos por dia. Temas que se quieren aprender.
+      FINANCES("Finanzas"),//finanzas //minutos por dia.
+      SOCIAL_ACTIVITY("Actividad Social"), //minutos por dia
+      OTHER("Otro");
+  }
+     */
     console.log({
-      categoryId,
+      categoryId,//
       title,
       goalUnit,
       goalValue,
-      hasDuration,
-      endDate,
-      selectedDays,
+      hasDuration, // no seria necesario enviar
+      endDate,//nulo o algo
+      selectedDays,//[0,1]
     });
 
     handleClose();
