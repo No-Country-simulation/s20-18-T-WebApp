@@ -162,12 +162,12 @@ if (isLoading) {
         ))}
       </List>
 
-      {/* <Button sx={{width: "70%", ml: "50px", mb: "30px"}}
+       <Button sx={{width: "70%", ml: "50px", mb: "30px"}}
         variant='contained' 
         startIcon={<AddOutlinedIcon />}
         onClick={handleOpenModal}>
         Crear hábito
-      </Button> */}
+      </Button> {/**/}
       <HabitFormModal open={isModalOpen} handleClose={handleCloseModal} />
     </div>
   );
