@@ -72,9 +72,9 @@ const Layout = ({ children }) => {
         sx={{
           flexGrow: 1,
           ml: { md: `${drawerWidth}px` },
-          p: { xs: 2, md: 4 },
+          p: { xs: 2, md: "0em 2em" },
           mb: "100px",
-          mt: "70px",
+          mt: {xs: "50px", md: "10px"},
         }}
       >
         {children}

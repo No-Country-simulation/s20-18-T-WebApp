@@ -144,7 +144,7 @@ export const CalendarWeekly = ({ habit, tasks }) => {
         </Box>
 
         {/* Second Row */}
-        <Box sx={{ display: "flex",justifyContent: "space-between" }} >          
+        <Box sx={{ display: "flex",justifyContent: "center", width: "100%" }} >          
            <CalendarRowWeekDays  tasks={tasks} daysWeekSet={daysWeekSet} />           
         </Box>
         <Divider orientation="horizontal" variant="middle" flexItem />

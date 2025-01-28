@@ -26,7 +26,7 @@ const dayColors = {
 
 const CalendarRowWeekDays = ({ tasks, daysWeekSet }) => {
   return (
-    <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+    <Box sx={{ display: "flex", justifyContent: "space-between", width: "100%",  gap: "6px" }}>
       {weekDays.map((day, index) => {
         const dayOfWeek = day.toLocaleDateString("es-ES", { weekday: "short" });
         const dayNumber = day.toLocaleDateString("es-ES", { day: "numeric" });
@@ -49,7 +49,8 @@ const CalendarRowWeekDays = ({ tasks, daysWeekSet }) => {
           <Box
             textAlign="center"
             key={index}
-            sx={{ display: "flex", flexDirection: "column", gap: "8px" }}
+            sx={{ display: "flex", flexDirection: "column", 
+              minWidth:  "36px", gap: "6px" }}
           >
             <Typography
               sx={{
@@ -66,7 +67,7 @@ const CalendarRowWeekDays = ({ tasks, daysWeekSet }) => {
                 backgroundColor,
                 border: isToday ? "3px solid #222" : undefined,
                 borderRadius: "12px",
-                padding: { xs: "4px 0.5em 2px 0.5em", md: "0.7em 1em 0.5em 1em" },
+                padding:  "4px 8px 0px 8px" ,
                 textAlign: "center",
                 color: "#222",
               }}

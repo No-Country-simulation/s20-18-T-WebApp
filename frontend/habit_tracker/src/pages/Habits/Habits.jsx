@@ -23,7 +23,8 @@ const sampleTasks = {
         alignItems: 'center',
         justifyContent: 'center',
         flexWrap: 'wrap',
-        mb: 2,
+        mb: "2em",
+        mt: "2em",
         gap: '2em'
       }  
     }
