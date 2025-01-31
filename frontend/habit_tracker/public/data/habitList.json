@@ -1,5 +1,6 @@
 [
   {
+    "id": 0,
     "icon": "DirectionsRunIcon",
     "title": "Salir a correr",
     "streak": 2,
@@ -12,6 +13,7 @@
     "daysWeekSet": [0, 2, 4]
   },
   {
+    "id": 1,
     "icon": "MenuBookOutlinedIcon",
     "title": "Leer 'El quijote de la mancha'",
     "streak": 1,
@@ -24,6 +26,7 @@
     "daysWeekSet": [1, 2, 3, 4, 5]
   },
   {
+    "id": 2,
     "icon": "FlatwareOutlinedIcon",
     "title": "Tomar dos litros de agua por dia",
     "streak": 1,  
@@ -36,6 +39,7 @@
     "daysWeekSet": [0, 1, 2, 3, 4, 5, 6]
   },
   {
+    "id": 3,
     "icon": "AttachFileOutlinedIcon",
     "title": "Pagar los impuestos",
     "streak": 0,  

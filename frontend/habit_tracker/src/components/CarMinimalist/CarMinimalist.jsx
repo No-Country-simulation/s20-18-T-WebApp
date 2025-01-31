@@ -1,4 +1,5 @@
 import React, {useState} from "react";
+
 import { Card, CardContent, Typography, Box, Button, IconButton, Menu, MenuItem  } from "@mui/material";
 
 import MoreVertIcon from '@mui/icons-material/MoreVert';
@@ -12,6 +13,8 @@ import FlatwareOutlinedIcon from '@mui/icons-material/FlatwareOutlined';
 import AttachFileOutlinedIcon from '@mui/icons-material/AttachFileOutlined';
 
 // import CalendarRowWeekDays from "../CalendarRowWeekDays/CalendarRowWeekDays";
+import DayOfWeekChip from './DayOfWeekChip';
+import { useNavigate } from "react-router-dom";
 
 const iconMap = {
   DirectionsRunIcon: <DirectionsRunIcon />,
@@ -20,11 +23,22 @@ const iconMap = {
   AttachFileOutlinedIcon: <AttachFileOutlinedIcon />
 };
 
-import DayOfWeekChip from './DayOfWeekChip';
+const defaultOptions = [
+  {id:0, name: "Ver mas"},
+  {id:1, name: "Editar"}
+]
 
-export const CarMinimalist = ({ habit, tasks }) => {
-  const [ showCompleteButton, setShowCompleteButton] = useState(true);
-    const {
+const canCompleteToday = (days) => {
+  const dayNumber = (new Date().getDay() + 6) % 7;
+  const can = days.includes(dayNumber);
+
+  //console.log(can);
+  return can;
+}
+
+export const CarMinimalist = ({ habit, tasks, options = defaultOptions }) => {
+  const navigate = useNavigate();
+  const {
         icon,
         title,
         streak,
@@ -34,6 +48,7 @@ export const CarMinimalist = ({ habit, tasks }) => {
         color,
         daysWeekSet    
       } = habit
+  const [ showCompleteButton, setShowCompleteButton] = useState(canCompleteToday(habit.daysWeekSet));
 
       const cardStyles = {
         borderRadius: '1rem',
@@ -70,7 +85,10 @@ export const CarMinimalist = ({ habit, tasks }) => {
         flexDirection: "column",
         rowGap: "16px",
         padding: {xs: '16px 0px', md: "16px"}
-      }
+      }     
+
+
+ 
 
   const handleClickComplete = (e) => {
     //console.log('click en complete');
@@ -97,8 +115,12 @@ export const CarMinimalist = ({ habit, tasks }) => {
   };
 
   const handleClickCard = () => {
-    console.log('Click en la card')
+    console.log(`Click en la card, ver habit con id ${habit.id}`);
+    navigate(`/viewhabit/${habit.id}`);
   }
+
+  
+  //console.log(canCompleteToday(habit.daysWeekSet))
 
   return (
     <Card sx={cardStyles} onClick={handleClickCard}>
@@ -131,15 +153,12 @@ export const CarMinimalist = ({ habit, tasks }) => {
               horizontal: "right",
             }}
           >
-            <MenuItem onClick={(e) => handleOptionClick(e,"Ver mas")}>
-              Ver mas
-            </MenuItem>
-            <MenuItem onClick={(e) => handleOptionClick(e,"Editar")}>
-              Editar
-            </MenuItem>
-            <MenuItem onClick={(e) => handleOptionClick(e,"Archivar")}>
-              Archivar
-            </MenuItem>
+            {options.map((option, index) => (
+              <MenuItem key={index}
+                onClick={(e) => handleOptionClick(e, option.id)}>
+                {option.name}
+              </MenuItem>
+            ))}
           </Menu>
         </Box>
 

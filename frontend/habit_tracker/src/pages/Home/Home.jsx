@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { useUsers } from "../../contexts/UsersContext";
-import { Box, Typography } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import { CarMinimalist } from '../../components/CarMinimalist/CarMinimalist';
+import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
+import HabitFormModal from '../../components/HabitFormModal/HabitFormModal';
 
 const styles = {
   headerContainer: {
@@ -25,6 +27,23 @@ const Home = () => {
   const { users, habits, isLoading } = useUsers(); 
   const [user, setUser] = useState({});
 
+    const [isModalOpen, setIsModalOpen] = useState(false);
+  
+    const handleOpenModal = () => {    
+      setIsModalOpen(true);
+    };
+  
+    const handleCloseModal = () => {
+      setIsModalOpen(false);
+    };
+
+    const habitsOptionsCard = [
+      {id:0, name: "Ver más"},
+      {id:1, name: "Agregar a favoritos"},
+      {id:2, name: "Editar"} , 
+      {id:3, name: "Archivar"} ,
+    ];
+
 
    useEffect(() => {      
       if (!isLoading) {
@@ -42,6 +61,14 @@ const Home = () => {
   return (
     
     <div>   
+      <Button sx={{ p: "15px 0px 16px 15px", position: "fixed", bottom: "70px", right: "30px"  }}
+        variant='contained' 
+        size="small"
+        startIcon={<AddOutlinedIcon />}
+        onClick={handleOpenModal}>        
+      </Button>
+      <HabitFormModal open={isModalOpen} handleClose={handleCloseModal} />
+      
       <Box component='header' sx={styles.headerContainer}>   
         <Typography variant="h5" color='primary' component="h1" sx={{ fontWeight: "600"}}>
           {`Bienvenido, ${user.name}`}
@@ -52,7 +79,7 @@ const Home = () => {
       </Box>
       <Box sx={styles.cardContainer}>
         {habits.map((habit, index)=>
-          <CarMinimalist habit={habit} key={`habit_${index}`}/> 
+          <CarMinimalist habit={habit} key={`habit_${index}`} options={habitsOptionsCard}/> 
         )}
       </Box>
       <Box sx={styles.header}>

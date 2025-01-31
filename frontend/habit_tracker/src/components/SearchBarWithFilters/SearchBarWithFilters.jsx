@@ -69,8 +69,7 @@ const SearchBarWithFilters = () => {
           onChange={handleOrderByChange}
         >
           <MenuItem value="recent">Más recientes</MenuItem>
-          <MenuItem value="oldest">Más antiguas</MenuItem>
-          <MenuItem value="archived">Archivados</MenuItem>
+          <MenuItem value="oldest">Más antiguas</MenuItem>          
         </Select>
       </FormControl>
     </Stack>

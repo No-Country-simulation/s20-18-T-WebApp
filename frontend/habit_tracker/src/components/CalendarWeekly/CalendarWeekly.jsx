@@ -22,8 +22,23 @@ const iconMap = {
 
 import DayOfWeekChip from './DayOfWeekChip';
 
-export const CalendarWeekly = ({ habit, tasks }) => {
-  const [ showCompleteButton, setShowCompleteButton] = useState(true);
+const defaultOptions = [
+  {id:0, name: "Ver mas"},
+  {id:1, name: "Editar"}
+];
+
+const canCompleteToday = (days) => {
+  const dayNumber = (new Date().getDay() + 6) % 7;
+  const can = days.includes(dayNumber);
+
+  //console.log(can);
+  return can;
+}
+
+
+export const CalendarWeekly = ({ habit, tasks, options = defaultOptions }) => {
+  
+  const [ showCompleteButton, setShowCompleteButton] = useState(canCompleteToday(habit.daysWeekSet));
     const {
         icon,
         title,
@@ -130,16 +145,13 @@ export const CalendarWeekly = ({ habit, tasks }) => {
               vertical: "top",
               horizontal: "right",
             }}
-          >
-            <MenuItem onClick={(e) => handleOptionClick(e,"Ver mas")}>
-              Ver mas
-            </MenuItem>
-            <MenuItem onClick={(e) => handleOptionClick(e,"Editar")}>
-              Editar
-            </MenuItem>
-            <MenuItem onClick={(e) => handleOptionClick(e,"Archivar")}>
-              Archivar
-            </MenuItem>
+          >           
+            {options.map((option, index) => (
+              <MenuItem key={index}
+                onClick={(e) => handleOptionClick(e, option.id)}>
+                {option.name}
+              </MenuItem>
+            ))}
           </Menu>
         </Box>
 
