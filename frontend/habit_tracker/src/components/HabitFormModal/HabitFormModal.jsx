@@ -35,15 +35,8 @@ const style = {
     },
   };
 
-  const categories = [
-    {id: 0, name: "Actividad Física", units: ['Metros', 'Kilómetros', 'Minutos', 'Veces']}, 
-    {id: 1, name: "Malos Hábitos", units: ['Minutos', 'Horas', 'Veces']},    
-    {id: 2, name: "Aprendizaje/Estudio", units: ['Minutos', 'Horas', 'Páginas', 'Capítulos', 'Veces']},    
-    {id: 3, name: "Finanzas", units: ['Minutos', 'Horas', 'Veces']},    
-    {id: 4, name: "Actividades Sociales", units: ['Minutos', 'Horas', 'Veces']},    
-    {id: 5, name: "Vida saludable", units: ['Metros', 'Kilómetros', 'Horas', 'Minutos', 'Páginas', 'Capítulos', 'Veces']},
-    {id: 6, name: "Otro hábito", units: ['Metros', 'Kilómetros', 'Horas', 'Minutos', 'Páginas', 'Capítulos', 'Veces']},
-    ];
+  import { categories, iconMap } from '../../utils/utils';
+  import { useUsers } from '../../contexts/UsersContext';
 
 
 
@@ -57,26 +50,27 @@ const HabitFormModal = ({ open, handleClose }) => {
   const [endDate, setEndDate] = useState('');
   const [selectedDays, setSelectedDays] = useState([]);
   const [currentUnits, setCurrentUnits] = useState([]);
+  const {addHabit} = useUsers();
 
-  const handleDayClick = (day) => {
-    if (selectedDays.includes(day)) {
-      setSelectedDays(selectedDays.filter((d) => d !== day));
+  const handleDayClick = (day, index) => {
+    if (selectedDays.includes(index)) { // Check for index in selectedDays
+      setSelectedDays(selectedDays.filter((d) => d !== index)); // Remove index
     } else {
-      setSelectedDays([...selectedDays, day]);
+      setSelectedDays([...selectedDays, index]); // Add index
     }
   };
 
   const handleCategory = (e) => {
     const catId = e.target.value;
     setCategoryId(catId);
-    const currentCategory = categories.find(cat=>cat.id==catId);    
+    const currentCategory = categories.find(cat=>cat.id==catId);
     setCurrentUnits(currentCategory.units);
     setTitle(currentCategory.name);
   }
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    
+
 
     let isValid = true;
     const errors = {};
@@ -101,18 +95,19 @@ const HabitFormModal = ({ open, handleClose }) => {
       return
     }
 
-    // Handle form submission logic here
-   
-    console.log({
-      categoryId,//
+    addHabit({
+      archived: false,
       title,
+      streak: 0,
+      porcCompletetion: 0,
       hasGoal,
       goalUnit,
       goalValue,
-      hasDuration, // no seria necesario enviar
-      endDate,//nulo o algo
-      selectedDays,//[0,1]
-    });
+      hasDuration,
+      endDate,
+      categoryId,
+      daysWeekSet: selectedDays, 
+    })
 
     handleClose();
   };
@@ -120,12 +115,14 @@ const HabitFormModal = ({ open, handleClose }) => {
   useEffect(() => {
     setCategoryId(0);
     setTitle(categories[0].name);
-    setGoalUnit([]);
+    setGoalUnit('');
     setGoalValue('');
     setHasDuration(false);
     setEndDate('');
     setSelectedDays([]);
-    setCurrentUnits([]);
+    setCurrentUnits(categories[0].units);
+
+
   }, [open]);
 
   return (
@@ -161,8 +158,11 @@ const HabitFormModal = ({ open, handleClose }) => {
                 <em>Seleccionar categoría</em>
               </MenuItem>
               {categories.map((cat) => (
-                <MenuItem value={cat.id} key={`cat_${cat.id}`}>
-                  {cat.name}
+                <MenuItem value={cat.id} key={`cat_${cat.id}`} sx={{}}>
+                  <Box sx={{display: "flex", flexDirection: "row", alignItems: "center", columnGap: 1, color: cat.color}}>
+                    {iconMap[cat.icon]}
+                    {cat.name}
+                  </Box>
                 </MenuItem>
               ))}
             </Select>
@@ -211,12 +211,12 @@ const HabitFormModal = ({ open, handleClose }) => {
               </FormControl>
 
               {hasGoal === "true" && (
-                <Box sx={{width: "100%", display: "flex", flexDirection: "column", rowGap: "1em", padding: "10px 0px"}}>                  
-                  
+                <Box sx={{width: "100%", display: "flex", flexDirection: "column", rowGap: "1em", padding: "10px 0px"}}>
+
                   <FormControl fullWidth>
                   <InputLabel id="unidad-meta-label">Unidad de tu meta</InputLabel>
                   <Select
-                    sx={{width: "100%"}}                    
+                    sx={{width: "100%"}}
                     id="unidad-meta"
                     value={goalUnit}
                     label="Unidad de tu meta (Opcional)"
@@ -288,11 +288,11 @@ const HabitFormModal = ({ open, handleClose }) => {
               "Viernes",
               "Sábado",
               "Domingo",
-            ].map((day) => (
+            ].map((day, index) => (
               <Button
                 key={day}
-                variant={selectedDays.includes(day) ? "contained" : "outlined"}
-                onClick={() => handleDayClick(day)}
+                variant={selectedDays.includes(index) ? "contained" : "outlined"} // Check for index in selectedDays
+                onClick={() => handleDayClick(day, index)} // Pass index to handleDayClick
                 color="primary"
                 sx={{ flex: "1 0 auto", minWidth: "auto" }}
               >

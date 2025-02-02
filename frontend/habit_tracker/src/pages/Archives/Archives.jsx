@@ -1,4 +1,5 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
+import { useNavigate } from "react-router-dom";
 
 import { Box, Button, Typography } from '@mui/material';
 import {CalendarWeekly} from '../../components/CalendarWeekly/CalendarWeekly';
@@ -20,6 +21,8 @@ const sampleTasks = {
   
   const Archives = () => {
 
+    const navigate = useNavigate();
+
     const styles = {
       cardContainer: {    
         display: 'flex',
@@ -33,9 +36,10 @@ const sampleTasks = {
       }  
     }
 
-  const { habits, isLoading } = useUsers(); 
+  const { habits, updateHabit, isLoading } = useUsers(); 
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currentHabits, setCurrentHabits] =useState(habits.filter(habit=>habit.archived==true))
     
       const handleOpenModal = () => {    
         setIsModalOpen(true);
@@ -45,33 +49,42 @@ const sampleTasks = {
         setIsModalOpen(false);
       };
 
+      const handleUnArchive = (e, habit) => {
+        e.preventDefault();   
+        console.log('archivar desde habits');
+        updateHabit(habit.id, {archived: false});
+        navigate('/archives');
+      }
+
   const archivesOptionsCard = [
-    {id:0, name: "Desarchivar"},
-    {id:1, name: "Eliminar"}  
+    {id:0, name: "Desarchivar", onClick: handleUnArchive},
+    {id:1, name: "Eliminar", onClick: ()=>{console.log('sin funcion todavia')}}  
   ];
+
+    useEffect(() => {
+      setCurrentHabits(habits.filter(habit=>habit.archived==true));
+    }, [habits]);
 
   if (isLoading) {
     return(
       <div>Cargando ...</div>
     )
-  }
-
-  //console.log('habits')
+  }  
 
   return (
     <>      
-    <Button sx={{ p: "15px 0px 16px 15px", position: "fixed", bottom: "70px", right: "30px"  }}
+    {/* <Button sx={{ p: "15px 0px 16px 15px", position: "fixed", bottom: "70px", right: "30px"  }}
         variant='contained' 
         size="small"
         startIcon={<AddOutlinedIcon />}
         onClick={handleOpenModal}>        
-      </Button>
+      </Button> */}
       <HabitFormModal open={isModalOpen} handleClose={handleCloseModal} />
 
       <Typography variant='h4' component="h1" sx={{fontWeight: "600", margin: "16px 0px"}}>Hábitos archivados</Typography>   
       <SearchBarWithFilters />
       <Box sx={styles.cardContainer}>
-      {habits.map((habit, index) => (        
+      {currentHabits.map((habit, index) => (        
         <CalendarWeekly 
         habit={habit}        
         tasks={sampleTasks}

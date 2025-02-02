@@ -1,4 +1,5 @@
 import React, {useState} from "react";
+
 import { Card, CardContent, Typography, Box, Button, IconButton, Menu, MenuItem  } from "@mui/material";
 
 import MoreVertIcon from '@mui/icons-material/MoreVert';
@@ -6,25 +7,19 @@ import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment';
 import ShowChartOutlinedIcon from '@mui/icons-material/ShowChartOutlined';
 import Divider from '@mui/material/Divider';
 
-import DirectionsRunIcon from '@mui/icons-material/DirectionsRun';
-import MenuBookOutlinedIcon from '@mui/icons-material/MenuBookOutlined';
-import FlatwareOutlinedIcon from '@mui/icons-material/FlatwareOutlined';
-import AttachFileOutlinedIcon from '@mui/icons-material/AttachFileOutlined';
 
 import CalendarRowWeekDays from "../CalendarRowWeekDays/CalendarRowWeekDays";
 
-const iconMap = {
-  DirectionsRunIcon: <DirectionsRunIcon />,
-  MenuBookOutlinedIcon: <MenuBookOutlinedIcon />,
-  FlatwareOutlinedIcon: <FlatwareOutlinedIcon />,
-  AttachFileOutlinedIcon: <AttachFileOutlinedIcon />
-};
+import { iconMap, categories } from "../../utils/utils";
 
 import DayOfWeekChip from './DayOfWeekChip';
 
+
+
+
 const defaultOptions = [
-  {id:0, name: "Ver mas"},
-  {id:1, name: "Editar"}
+  {id:0, name: "Ver mas", onClick: null},
+  {id:1, name: "Editar", onClick: null}
 ];
 
 const canCompleteToday = (days) => {
@@ -37,61 +32,64 @@ const canCompleteToday = (days) => {
 
 
 export const CalendarWeekly = ({ habit, tasks, options = defaultOptions }) => {
-  
-  const [ showCompleteButton, setShowCompleteButton] = useState(canCompleteToday(habit.daysWeekSet));
-    const {
-        icon,
-        title,
-        streak,
-        porcCompletetion,        
-        date,
-        to,
-        color,
-        daysWeekSet    
-      } = habit
 
-      const cardStyles = {
-        borderRadius: '1rem',
-        width: {xs: "100%", md: "460px"},
-        paddingTop: "0.2em",
-        paddingLeft: "1em",
-        paddingRight: "1em",
-        boxShadow: 1,
-        textDecoration: 'none', // Quitar subrayado del enlace
-        color: 'inherit', // Heredar el color del texto
-        cursor: 'pointer', // Indicar que es clickeable
-        '&:hover': {
-          boxShadow: 3, // Un ligero efecto al pasar el ratón        
-        },
-        backgroundColor: "#FCFCFC"
-      }
 
-      const cardTitleIcon = {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderRadius: '5px',
-        width: 30,
-        height: 30,
-        bgcolor: color,
-        color: '#FCFCFC',
-        mr: 1,
-      }      
+const [ showCompleteButton, setShowCompleteButton] = useState(canCompleteToday(habit.daysWeekSet));
+const { 
+    categoryId,    
+    title,
+    streak,
+    porcCompletetion,        
+    date,              
+    daysWeekSet    
+  } = habit;
+  const icon = categories.find(cat=>cat.id == categoryId).icon;  
+  const color = categories.find(cat=>cat.id == categoryId).color; 
 
-      const cardTitleText = { fontWeight: '600', fontSize: '1.3em', lineHeight: "1em" };
+  const cardStyles = {
+    borderRadius: '1rem',
+    width: {xs: "100%", md: "460px"},
+    paddingTop: "0.2em",
+    paddingLeft: "1em",
+    paddingRight: "1em",
+    boxShadow: 1,
+    textDecoration: 'none', // Quitar subrayado del enlace
+    color: 'inherit', // Heredar el color del texto
+    cursor: 'pointer', // Indicar que es clickeable
+    '&:hover': {
+      boxShadow: 3, // Un ligero efecto al pasar el ratón        
+    },
+    backgroundColor: "#FCFCFC"
+  }
 
-      const cardContent = {
-        display: "flex",
-        flexDirection: "column",
-        rowGap: "16px",
-        padding: {xs: '16px 0px', md: "16px"}
-      }
+  const cardTitleIcon = {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: '5px',
+    width: 30,
+    height: 30,
+    bgcolor: color,
+    color: '#FCFCFC',
+    mr: 1,
+  }      
+
+  const cardTitleText = { fontWeight: '600', fontSize: '1.3em', lineHeight: "1em" };
+
+  const cardContent = {
+    display: "flex",
+    flexDirection: "column",
+    rowGap: "16px",
+    padding: {xs: '16px 0px', md: "16px"}
+  }
 
   const handleClickComplete = (e) => {
     //console.log('click en complete');
     e.stopPropagation();
     setShowCompleteButton(false);
   }
+
+ 
 
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -108,7 +106,9 @@ export const CalendarWeekly = ({ habit, tasks, options = defaultOptions }) => {
   const handleOptionClick = (e,option) => {
     e.stopPropagation();
     console.log(`Option selected: ${option}`);
-    setAnchorEl(null); // Cierra el menú después de seleccionar
+    setAnchorEl(null); // Cierra el menú después de seleccionar    
+    const onClick = options.find(opt=>opt.id==option).onClick || null;    
+    onClick(e, habit);    
   };
 
   const handleClickCard = () => {

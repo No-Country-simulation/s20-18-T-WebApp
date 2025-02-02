@@ -7,21 +7,15 @@ import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment';
 import ShowChartOutlinedIcon from '@mui/icons-material/ShowChartOutlined';
 import Divider from '@mui/material/Divider';
 
-import DirectionsRunIcon from '@mui/icons-material/DirectionsRun';
-import MenuBookOutlinedIcon from '@mui/icons-material/MenuBookOutlined';
-import FlatwareOutlinedIcon from '@mui/icons-material/FlatwareOutlined';
-import AttachFileOutlinedIcon from '@mui/icons-material/AttachFileOutlined';
 
 // import CalendarRowWeekDays from "../CalendarRowWeekDays/CalendarRowWeekDays";
 import DayOfWeekChip from './DayOfWeekChip';
 import { useNavigate } from "react-router-dom";
 
-const iconMap = {
-  DirectionsRunIcon: <DirectionsRunIcon />,
-  MenuBookOutlinedIcon: <MenuBookOutlinedIcon />,
-  FlatwareOutlinedIcon: <FlatwareOutlinedIcon />,
-  AttachFileOutlinedIcon: <AttachFileOutlinedIcon />
-};
+import { categories, iconMap } from "../../utils/utils";
+import zIndex from "@mui/material/styles/zIndex";
+
+
 
 const defaultOptions = [
   {id:0, name: "Ver mas"},
@@ -32,27 +26,30 @@ const canCompleteToday = (days) => {
   const dayNumber = (new Date().getDay() + 6) % 7;
   const can = days.includes(dayNumber);
 
-  //console.log(can);
+  
   return can;
 }
 
 export const CarMinimalist = ({ habit, tasks, options = defaultOptions }) => {
   const navigate = useNavigate();
-  const {
-        icon,
+  const {        
         title,
         streak,
         porcCompletetion,        
-        date,
-        to,
-        color,
+        date,                
+        categoryId,
         daysWeekSet    
       } = habit
+  const iconName = categories.find(cat=>cat.id == categoryId).icon;  
+  const color = categories.find(cat=>cat.id == categoryId).color; 
+  
+
   const [ showCompleteButton, setShowCompleteButton] = useState(canCompleteToday(habit.daysWeekSet));
 
       const cardStyles = {
         borderRadius: '1rem',
         width: {xs: "100%", md: "460px"},
+        minHeight: "170px",
         paddingTop: "0.2em",
         paddingLeft: "1em",
         paddingRight: "1em",
@@ -63,7 +60,8 @@ export const CarMinimalist = ({ habit, tasks, options = defaultOptions }) => {
         '&:hover': {
           boxShadow: 3, // Un ligero efecto al pasar el ratón        
         },
-        backgroundColor: "#FCFCFC"
+        backgroundColor: "#FCFCFC",
+        zIndex:100
       }
 
       const cardTitleIcon = {
@@ -130,16 +128,16 @@ export const CarMinimalist = ({ habit, tasks, options = defaultOptions }) => {
         <Box display="flex" alignItems="center" justifyContent="space-between" >
           <Box display="flex" alignItems="center">
             <Box sx={cardTitleIcon} >
-              {iconMap[icon]}
+              {iconMap[iconName]}
             </Box>
             <Typography variant="subtitle1" sx={cardTitleText}>
               {title}
             </Typography>
           </Box>
-          <IconButton aria-label="opciones" onClick={handleMoreClick}>
+          {/*<IconButton aria-label="opciones" onClick={handleMoreClick}>
             <MoreVertIcon />
           </IconButton>
-          {/* Menu Component */}
+           Menu Component */}
           <Menu
             anchorEl={anchorEl}
             open={open}
