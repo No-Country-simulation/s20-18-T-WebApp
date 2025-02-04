@@ -19,7 +19,7 @@ const sampleTasks = {
   };
   
   
-  const Archives = () => {
+  export const Archives = () => {
 
     const navigate = useNavigate();
 
@@ -36,7 +36,7 @@ const sampleTasks = {
       }  
     }
 
-  const { habits, updateHabit, isLoading } = useUsers(); 
+  const { habits, updateHabit, deleteHabit, isLoading } = useUsers(); 
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentHabits, setCurrentHabits] =useState(habits.filter(habit=>habit.archived==true))
@@ -51,14 +51,19 @@ const sampleTasks = {
 
       const handleUnArchive = (e, habit) => {
         e.preventDefault();   
-        console.log('archivar desde habits');
+        //console.log('archivar desde habits');
         updateHabit(habit.id, {archived: false});
+        navigate('/archives');
+      }
+      const handleDelete = (e, habit) => {
+        //console.log(`Eliminando el habito ${habit.title}`);
+        deleteHabit(habit.id);
         navigate('/archives');
       }
 
   const archivesOptionsCard = [
     {id:0, name: "Desarchivar", onClick: handleUnArchive},
-    {id:1, name: "Eliminar", onClick: ()=>{console.log('sin funcion todavia')}}  
+    {id:1, name: "Eliminar", onClick: handleDelete}  
   ];
 
     useEffect(() => {
@@ -96,4 +101,3 @@ const sampleTasks = {
     </>
   )
 }
-export default Archives;

@@ -1,4 +1,5 @@
 import React, {useState} from "react";
+import { useNavigate } from "react-router-dom";
 
 import { Card, CardContent, Typography, Box, Button, IconButton, Menu, MenuItem  } from "@mui/material";
 
@@ -33,6 +34,7 @@ const canCompleteToday = (days) => {
 
 export const CalendarWeekly = ({ habit, tasks, options = defaultOptions }) => {
 
+const navigate = useNavigate();
 
 const [ showCompleteButton, setShowCompleteButton] = useState(canCompleteToday(habit.daysWeekSet));
 const { 
@@ -105,14 +107,14 @@ const {
 
   const handleOptionClick = (e,option) => {
     e.stopPropagation();
-    console.log(`Option selected: ${option}`);
+    //console.log(`Option selected: ${option}`);
     setAnchorEl(null); // Cierra el menú después de seleccionar    
-    const onClick = options.find(opt=>opt.id==option).onClick || null;    
+    const onClick = options.find(opt=>opt.id==option).onClick || null;        
     onClick(e, habit);    
   };
 
-  const handleClickCard = () => {
-    console.log('Click en la card')
+  const handleClickCard = () => {    
+    navigate(`/viewhabit/${habit.id}`);
   }
 
   return (

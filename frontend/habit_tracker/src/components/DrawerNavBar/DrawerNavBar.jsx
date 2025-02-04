@@ -14,6 +14,8 @@ import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
 import SystemUpdateAltIcon from '@mui/icons-material/SystemUpdateAlt';
+import GroupsIcon from '@mui/icons-material/Groups';
+import AppShortcutIcon from '@mui/icons-material/AppShortcut';
 
 
 import React, { useState, useEffect } from 'react';
@@ -48,7 +50,9 @@ const DrawerNavBar = () => {
     { id: 1, name: 'Inicio', icon: <DashboardOutlinedIcon />, href: '/' },
     { id: 2, name: 'Habitos', icon: <FavoriteBorderOutlinedIcon />, href: '/habits' },
     { id: 3, name: 'Archivados', icon: <SystemUpdateAltIcon />, href: '/Archives' },
-    { id: 4, name: 'Cerrar sesión', icon: <LogoutOutlinedIcon />, href: '/logout' },    
+    { id: 4, name: 'Haru', icon: <AppShortcutIcon />, href: '/haru' },
+    { id: 5, name: 'Nosotros', icon: <GroupsIcon />, href: '/us' },
+    { id: 6, name: 'Cerrar sesión', icon: <LogoutOutlinedIcon />, href: '/logout' },    
   ];
 
   const handleListItemClick = (index) => {

@@ -14,11 +14,19 @@ const sampleTasks = {
     "2025-01-14": "pending",
     "2025-01-15": "completed",    
     "2025-01-20": "completed",
+    "2025-02-03": "completed",
+    "2025-02-04": "pending",
+    "2025-02-05": "completed",
+    "2025-02-06": "pending",
+    //"2025-02-07": "completed",
+    //"2025-02-08": "pending",
+    //"2025-02-09": "completed",
+    
     // Agrega más fechas según sea necesario
   };
 
   
-const Habits = () => {
+export const Habits = () => {
 
     
   const navigate = useNavigate();
@@ -48,19 +56,22 @@ const Habits = () => {
       const handleCloseModal = () => {
         setIsModalOpen(false);
       };
+
+      const handleClickCard = (e,habit) => {    
+        e.preventDefault();
+        navigate(`/viewhabit/${habit.id}`);
+      }
       
       const handleArchive = (e, habit) => {
         e.preventDefault();   
-        console.log('archivar desde habits');
+        //console.log('archivar desde habits');
         updateHabit(habit.id, {archived: true});
         navigate('/habits');
       }
-
-
       
       const habitsOptionsCard = [
-        {id:0, name: "Ver más", onClick: ()=>{console.log('sin funcion todavia')}},
-        {id:1, name: "Agregar a favoritos", onClick: ()=>{console.log('sin funcion todavia')}},
+        {id:0, name: "Ver más", onClick: handleClickCard},
+        // {id:1, name: "Agregar a favoritos", onClick: ()=>{console.log('sin funcion todavia')}},
         {id:2, name: "Editar", onClick: ()=>{console.log('sin funcion todavia')}} , 
         {id:3, name: "Archivar", onClick: handleArchive} ,
       ];
@@ -75,7 +86,7 @@ const Habits = () => {
     )
   }
 
-  console.log('habits')
+  //console.log('habits')
 
   return (
     <>      
@@ -102,4 +113,3 @@ const Habits = () => {
     </>
   )
 }
-export default Habits;

@@ -83,6 +83,14 @@ export const UserProvider = ({ children }) => {
     localStorage.setItem(HABITS_STORAGE_KEY, JSON.stringify(updatedHabitsArray));
   };
 
+   // Function to delete a habit
+   const deleteHabit = (habitIdToDelete) => {
+    const updatedHabits = habits.filter(habit => habit.id !== habitIdToDelete);
+    setHabits(updatedHabits);
+    // Update localStorage with the updated habit list
+    localStorage.setItem(HABITS_STORAGE_KEY, JSON.stringify(updatedHabits));
+  };
+
   // Function to update habits in localStorage whenever habits state changes (alternative approach - useEffect)
   // useEffect(() => {
   //   if (!isLoading) { // Prevent saving during initial load, only on updates
@@ -91,7 +99,7 @@ export const UserProvider = ({ children }) => {
   // }, [habits, isLoading]); // Dependency on habits and isLoading
 
   return (
-    <UserContext.Provider value={{ users, habits, isLoading, addHabit, updateHabit }}>
+    <UserContext.Provider value={{ users, habits, isLoading, addHabit, updateHabit, deleteHabit }}>
       {children}
     </UserContext.Provider>
   );

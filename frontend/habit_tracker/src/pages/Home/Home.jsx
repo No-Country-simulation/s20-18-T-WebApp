@@ -37,7 +37,7 @@ const styles = {
   }
 };
 
-const Home = () => {
+export const Home = () => {
   const { users, habits, isLoading } = useUsers(); 
   const [user, setUser] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -130,4 +130,3 @@ const Home = () => {
   );
 };
 
-export default Home;

@@ -24,13 +24,13 @@ export const iconMap = {
 
 
 export  const categories = [
-    {id: 0, name: "Actividad Física", units: ['Metros', 'Kilómetros', 'Minutos', 'Veces'], icon: 'DirectionsRunIcon', color: '#49BE9F'}, 
-    {id: 1, name: "Malos Hábitos", units: ['Minutos', 'Horas', 'Veces'], icon: 'BlockIcon', color: '#a92c38'},    
-    {id: 2, name: "Aprendizaje/Estudio", units: ['Minutos', 'Horas', 'Páginas', 'Capítulos', 'Veces'], icon: 'SchoolIcon', color: '#7E71E1'},    
-    {id: 3, name: "Finanzas", units: ['Minutos', 'Horas', 'Veces'], icon: 'LocalAtmIcon', color: '#136959'},    
-    {id: 4, name: "Actividades Sociales", units: ['Minutos', 'Horas', 'Veces'], icon: 'GroupsIcon', color: '#EA7F89'},    
-    {id: 5, name: "Vida saludable", units: ['Metros', 'Kilómetros', 'Horas', 'Minutos', 'Páginas', 'Capítulos', 'Veces'], icon: 'SelfImprovementIcon', color: '#2232ab'},
-    {id: 6, name: "Otro hábito", units: ['Metros', 'Kilómetros', 'Horas', 'Minutos', 'Páginas', 'Capítulos', 'Veces'], icon: 'CategoryIcon', color: '#b74a06'},
+    {id: 0, name: "Actividad Física", units: ['Metros', 'Kilómetros', 'Minutos', 'Veces'], icon: 'DirectionsRunIcon', color: '#32CD32'}, 
+    {id: 1, name: "Malos Hábitos", units: ['Minutos', 'Horas', 'Veces'], icon: 'BlockIcon', color: '#F0294A'},    
+    {id: 2, name: "Aprendizaje/Estudio", units: ['Minutos', 'Horas', 'Páginas', 'Capítulos', 'Veces'], icon: 'SchoolIcon', color: '#2A71D0'},    
+    {id: 3, name: "Finanzas", units: ['Minutos', 'Horas', 'Veces'], icon: 'LocalAtmIcon', color: '#2E8B57'},    
+    {id: 4, name: "Actividades Sociales", units: ['Minutos', 'Horas', 'Veces'], icon: 'GroupsIcon', color: '#F4A261'},    
+    {id: 5, name: "Vida saludable", units: ['Metros', 'Kilómetros', 'Horas', 'Minutos', 'Páginas', 'Capítulos', 'Veces'], icon: 'SelfImprovementIcon', color: '#FFD166'},
+    {id: 6, name: "Otro hábito", units: ['Metros', 'Kilómetros', 'Horas', 'Minutos', 'Páginas', 'Capítulos', 'Veces'], icon: 'CategoryIcon', color: '#A0A0A0'},
     ];
 
    

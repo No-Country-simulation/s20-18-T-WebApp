@@ -1,11 +1,7 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import Home from "../pages/Home/Home";
-import Habits from "../pages/Habits/Habits";
-import { ViewHabit } from "../pages/ViewHabit/ViewHabit";
-import Archives from '../pages/Archives/Archives';
-import {Profile} from "../pages/Profile/Profile";
-import {Settings} from "../pages/Settings/Settings";
+
+import {Home, Habits, ViewHabit, Archives, Profile, AboutUs, AboutHaru} from '../pages';
 
 const UserRoutes = () => {
   return (
@@ -15,9 +11,13 @@ const UserRoutes = () => {
       <Route path="/profile" element={<Profile />} />
       <Route path="/archives" element={<Archives />} />
       <Route path="/viewhabit/:id" element={<ViewHabit />} />
-      <Route path="/settings" element={<Settings />} />
+      <Route path="/us" element={<AboutUs />} />
+      <Route path="/haru" element={<AboutHaru />} />      
     </Routes>
   );
 };
 
 export default UserRoutes;
+
+
+
