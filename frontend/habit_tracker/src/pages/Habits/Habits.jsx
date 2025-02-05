@@ -15,7 +15,7 @@ const sampleTasks = {
     "2025-01-15": "completed",    
     "2025-01-20": "completed",
     "2025-02-03": "completed",
-    "2025-02-04": "pending",
+    // "2025-02-04": "pending",
     "2025-02-05": "completed",
     "2025-02-06": "pending",
     //"2025-02-07": "completed",
@@ -44,7 +44,7 @@ export const Habits = () => {
       }  
     }
 
-  const { habits, updateHabit,  isLoading } = useUsers(); 
+  const { habits, habitLogs, updateHabit, updateHabitLogs,  isLoading } = useUsers(); 
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentHabits, setCurrentHabits] =useState(habits.filter(habit=>habit.archived==false))
@@ -67,7 +67,15 @@ export const Habits = () => {
         //console.log('archivar desde habits');
         updateHabit(habit.id, {archived: true});
         navigate('/habits');
-      }
+      };
+
+      //newLogStatus = "completed" or "pending"
+        const handleAddLogEntry = (habitIdToUpdate) => {
+          console.log('adding habbit log');          
+          const newLogDate = "2025-02-04";      
+          const newLogStatus="completed";
+          updateHabitLogs(habitIdToUpdate, newLogDate, newLogStatus);
+        };
       
       const habitsOptionsCard = [
         {id:0, name: "Ver más", onClick: handleClickCard},
@@ -86,7 +94,7 @@ export const Habits = () => {
     )
   }
 
-  //console.log('habits')
+  //console.log(habitLogs)
 
   return (
     <>      
@@ -103,10 +111,11 @@ export const Habits = () => {
       <Box sx={styles.cardContainer}>
       {currentHabits.map((habit, index) => (        
         <CalendarWeekly 
-        habit={habit}        
-        tasks={sampleTasks}
-        options={habitsOptionsCard}
-        key={index}
+          habit={habit}        
+          tasks={habitLogs.find(log=>log.id==habit.id).log}   
+          onComplete={handleAddLogEntry}     
+          options={habitsOptionsCard}
+          key={index}
       />
       ))}        
       </Box>

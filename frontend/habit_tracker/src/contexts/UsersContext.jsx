@@ -4,10 +4,12 @@ import axios from "axios";
 const UserContext = createContext();
 
 const HABITS_STORAGE_KEY = 'habitListData'; // Key to store habits in localStorage
+const HABIT_LOGS_STORAGE_KEY = 'habitLogsData'; // Key to store habitLogs in localStorage
 
 export const UserProvider = ({ children }) => {
   const [users, setUsers] = useState([]);
   const [habits, setHabits] = useState([]);
+  const [habitLogs, setHabitLogs] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   const fetchUsers = async () => {
@@ -29,23 +31,46 @@ export const UserProvider = ({ children }) => {
     }
   };
 
+  const fetchHabitsLogs = async () => {
+    try {
+      const response = await axios.get("./data/habitLogs.json");
+      return response.data; // Return the fetched data, don't set state yet
+    } catch (error) {
+      console.error("Error fetching habitLogs:", error);
+      return []; // Return empty array in case of error
+    }
+  };
+
   const loadData = async () => {
     await fetchUsers(); // Fetch users in parallel
 
-    // Check localStorage for existing habits
+    // Load habits from localStorage or fetch from JSON
     const storedHabits = localStorage.getItem(HABITS_STORAGE_KEY);
+    let initialHabits = []; // Initialize the variable
 
     if (storedHabits) {
-      // If habits are in localStorage, parse and use them
-      setHabits(JSON.parse(storedHabits));
-      setIsLoading(false); // Set loading to false after loading from localStorage
-    } else {
-      // If no habits in localStorage, fetch from JSON and then initialize localStorage
-      const initialHabits = await fetchInitialHabits();
+      initialHabits = JSON.parse(storedHabits);
       setHabits(initialHabits);
-      localStorage.setItem(HABITS_STORAGE_KEY, JSON.stringify(initialHabits)); // Store initial data in localStorage
-      setIsLoading(false); // Set loading to false after fetching initial data
+    } else {
+      initialHabits = await fetchInitialHabits();
+      setHabits(initialHabits);
+      localStorage.setItem(HABITS_STORAGE_KEY, JSON.stringify(initialHabits));
     }
+
+    // Load habitLogs from localStorage or fetch from JSON
+    const storedHabitLogs = localStorage.getItem(HABIT_LOGS_STORAGE_KEY);
+    let initialHabitLogs = []; // Initialize the variable
+
+    if (storedHabitLogs) {
+      initialHabitLogs = JSON.parse(storedHabitLogs);
+      setHabitLogs(initialHabitLogs);
+    } else {
+      initialHabitLogs = await fetchHabitsLogs();
+      setHabitLogs(initialHabitLogs);
+      localStorage.setItem(HABIT_LOGS_STORAGE_KEY, JSON.stringify(initialHabitLogs));
+    }
+
+    setIsLoading(false); // Set loading to false after fetching all initial data
   };
 
   useEffect(() => {
@@ -91,6 +116,20 @@ export const UserProvider = ({ children }) => {
     localStorage.setItem(HABITS_STORAGE_KEY, JSON.stringify(updatedHabits));
   };
 
+  const updateHabitLogs = (habitId, newDate, newStatus) => {
+    const updatedHabitLogs = habitLogs.map(habitLog => {
+        if (habitLog.id === habitId) {
+            // Found the habit log to update
+            const updatedLog = [...habitLog.log, { date: newDate, status: newStatus }];
+            return { ...habitLog, log: updatedLog }; // Update the log array
+        }
+        return habitLog; // Keep other habit logs unchanged
+    });
+
+    setHabitLogs(updatedHabitLogs);
+    localStorage.setItem(HABIT_LOGS_STORAGE_KEY, JSON.stringify(updatedHabitLogs));
+};
+
   // Function to update habits in localStorage whenever habits state changes (alternative approach - useEffect)
   // useEffect(() => {
   //   if (!isLoading) { // Prevent saving during initial load, only on updates
@@ -99,7 +138,7 @@ export const UserProvider = ({ children }) => {
   // }, [habits, isLoading]); // Dependency on habits and isLoading
 
   return (
-    <UserContext.Provider value={{ users, habits, isLoading, addHabit, updateHabit, deleteHabit }}>
+    <UserContext.Provider value={{ users, habits, habitLogs, isLoading, addHabit, updateHabit, deleteHabit, updateHabitLogs }}>
       {children}
     </UserContext.Provider>
   );

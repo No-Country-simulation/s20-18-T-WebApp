@@ -65,3 +65,19 @@ export  const categories = [
         habitDuration: "1 Hora", 
       },
     ];
+
+    export const canCompleteToday = (habit, tasks) => {
+      // Obtener la fecha actual en formato YYYY-MM-DD (local)
+      const today = new Date();
+      const todayString = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+    
+      // Verificar si ya existe una tarea para hoy
+      const hasTaskForToday = tasks.some(task => task.date === todayString);
+    
+      // Si existe una tarea para hoy (en cualquier estado), retornar false
+      if (hasTaskForToday) return false;
+    
+      // Verificar si el hábito está programado para hoy
+      const dayNumber = (today.getDay() + 6) % 7; // Lunes = 0, Domingo = 6
+      return habit.daysWeekSet.includes(dayNumber);
+    };

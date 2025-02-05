@@ -15,29 +15,21 @@ import { iconMap, categories } from "../../utils/utils";
 
 import DayOfWeekChip from './DayOfWeekChip';
 
-
-
+import { canCompleteToday } from "../../utils/utils";
 
 const defaultOptions = [
   {id:0, name: "Ver mas", onClick: null},
   {id:1, name: "Editar", onClick: null}
 ];
 
-const canCompleteToday = (days) => {
-  const dayNumber = (new Date().getDay() + 6) % 7;
-  const can = days.includes(dayNumber);
 
-  //console.log(can);
-  return can;
-}
-
-
-export const CalendarWeekly = ({ habit, tasks, options = defaultOptions }) => {
+export const CalendarWeekly = ({ habit, tasks, onComplete, options = defaultOptions }) => {
 
 const navigate = useNavigate();
 
-const [ showCompleteButton, setShowCompleteButton] = useState(canCompleteToday(habit.daysWeekSet));
+const [ showCompleteButton, setShowCompleteButton] = useState(canCompleteToday(habit, tasks));
 const { 
+    id,
     categoryId,    
     title,
     streak,
@@ -88,10 +80,9 @@ const {
   const handleClickComplete = (e) => {
     //console.log('click en complete');
     e.stopPropagation();
+    onComplete(id);
     setShowCompleteButton(false);
-  }
-
- 
+  }; 
 
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -115,7 +106,9 @@ const {
 
   const handleClickCard = () => {    
     navigate(`/viewhabit/${habit.id}`);
-  }
+  }  
+
+  console.log(tasks);
 
   return (
     <Card sx={cardStyles} onClick={handleClickCard}>

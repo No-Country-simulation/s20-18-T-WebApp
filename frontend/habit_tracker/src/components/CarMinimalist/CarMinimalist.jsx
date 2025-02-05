@@ -13,26 +13,20 @@ import DayOfWeekChip from './DayOfWeekChip';
 import { useNavigate } from "react-router-dom";
 
 import { categories, iconMap } from "../../utils/utils";
-import zIndex from "@mui/material/styles/zIndex";
 
-
+import { canCompleteToday } from "../../utils/utils";
 
 const defaultOptions = [
   {id:0, name: "Ver mas"},
   {id:1, name: "Editar"}
 ]
 
-const canCompleteToday = (days) => {
-  const dayNumber = (new Date().getDay() + 6) % 7;
-  const can = days.includes(dayNumber);
 
-  
-  return can;
-}
 
 export const CarMinimalist = ({ habit, tasks, options = defaultOptions }) => {
   const navigate = useNavigate();
-  const {        
+  const {      
+        id,  
         title,
         streak,
         porcCompletetion,        
@@ -44,7 +38,7 @@ export const CarMinimalist = ({ habit, tasks, options = defaultOptions }) => {
   const color = categories.find(cat=>cat.id == categoryId).color; 
   
 
-  const [ showCompleteButton, setShowCompleteButton] = useState(canCompleteToday(habit.daysWeekSet));
+  const [ showCompleteButton, setShowCompleteButton] = useState(canCompleteToday(habit, tasks));
 
       const cardStyles = {
         borderRadius: '1rem',
@@ -83,16 +77,14 @@ export const CarMinimalist = ({ habit, tasks, options = defaultOptions }) => {
         flexDirection: "column",
         rowGap: "16px",
         padding: {xs: '16px 0px', md: "16px"}
-      }     
+      }      
 
-
- 
-
-  const handleClickComplete = (e) => {
-    //console.log('click en complete');
-    e.stopPropagation();
-    setShowCompleteButton(false);
-  }
+      const handleClickComplete = (e) => {
+        //console.log('click en complete');
+        e.stopPropagation();
+        onComplete(id);
+        setShowCompleteButton(false);
+      }; 
 
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
