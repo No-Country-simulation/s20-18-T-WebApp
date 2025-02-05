@@ -1,5 +1,8 @@
 import React from "react";
 import { Box, Typography } from "@mui/material";
+import { getCurrentDate } from "../../utils/utils";
+import { Habits } from "../../pages/Habits/Habits";
+
 
 const dayColors = {
     completed: "#4caf50", // Verde
@@ -21,28 +24,30 @@ const getWeekDays = () => {
     });
 };
 
-const CalendarRowWeekDays = ({ tasks }) => {
-    const weekDays = getWeekDays();
-    const today = new Date();
-    const todayString = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
-
+const CalendarRowWeekDays = ({ tasks, daysWeekSet }) => {
+    const weekDays = getWeekDays();    
+    const todayString = getCurrentDate();//'2025-02-05'
+    
     return (
         <Box sx={{ display: "flex", justifyContent: "space-between", width: "100%", gap: "6px" }}>
             {weekDays.map((day, index) => {
                 const dayOfWeek = day.toLocaleDateString("es-ES", { weekday: "short" });
                 const dayNumber = day.getDate();
+
                 
                 // Formato YYYY-MM-DD en hora local
                 const dayString = `${day.getFullYear()}-${String(day.getMonth() + 1).padStart(2, '0')}-${String(day.getDate()).padStart(2, '0')}`;
-                const taskForDay = tasks.find(task => task.date === dayString);
+                const taskForDay = tasks?.find(task => task.date == dayString);
+                const setForDay = daysWeekSet.includes(index);
 
+                //console.log(daysWeekSet)
                 // Determinar color
                 let backgroundColor = dayColors.default;
-                if (taskForDay) {
+                if (setForDay) {                    
                     if (dayString > todayString) {
                         backgroundColor = dayColors.setted; // Fecha futura
                     } else {
-                        backgroundColor = dayColors[taskForDay.status] || dayColors.setted;
+                        backgroundColor = dayColors[taskForDay?.status] || dayColors.setted;
                     }
                 }
 

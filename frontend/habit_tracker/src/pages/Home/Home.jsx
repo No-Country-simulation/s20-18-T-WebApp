@@ -7,7 +7,8 @@ import HabitFormModal from '../../components/HabitFormModal/HabitFormModal';
 import Carousel from 'react-material-ui-carousel';
 import CardHabitTemplate from '../../components/CardHabitTemplate';
 
-import { habitsTemplates } from '../../utils/utils';
+import { habitsTemplates, getCurrentDate } from '../../utils/utils';
+
 
 const styles = {
   headerContainer: {
@@ -38,7 +39,7 @@ const styles = {
 };
 
 export const Home = () => {
-  const { users, habits, habitLogs, isLoading } = useUsers(); 
+  const { users, habits, habitLogs, updateHabitLogs, isLoading } = useUsers(); 
   const [user, setUser] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentHabits, setCurrentHabits] =useState(habits.filter(habit=>habit.archived==false))
@@ -49,7 +50,15 @@ export const Home = () => {
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
-  }; 
+  };
+  
+  //newLogStatus = "completed" or "pending"
+  const handleAddLogEntry = (habitIdToUpdate) => {
+    console.log('adding habbit log');          
+    const newLogDate = getCurrentDate();
+    const newLogStatus="completed";
+    updateHabitLogs(habitIdToUpdate, newLogDate, newLogStatus);
+  };
 
   const habitsOptionsCard = [
     {id:0, name: "Ver más", onClick: null},
@@ -99,7 +108,11 @@ export const Home = () => {
         >
           {currentHabits.map((habit, index) => (
             <Box key={`habit_${index}`} sx={styles.carouselItem}>
-              <CarMinimalist habit={habit} tasks={habitLogs.find(log=>log.id==habit.id).log} options={habitsOptionsCard} />
+              <CarMinimalist 
+                habit={habit} 
+                tasks={habitLogs.find(log=>log.id==habit.id)?.log || null} 
+                onComplete={handleAddLogEntry}
+                options={habitsOptionsCard} />
             </Box>
           ))}
         </Carousel>

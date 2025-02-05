@@ -78,7 +78,7 @@ const {
   }
 
   const handleClickComplete = (e) => {
-    //console.log('click en complete');
+    console.log('click en complete',id);
     e.stopPropagation();
     onComplete(id);
     setShowCompleteButton(false);
@@ -108,7 +108,7 @@ const {
     navigate(`/viewhabit/${habit.id}`);
   }  
 
-  console.log(tasks);
+  //console.log(habit);
 
   return (
     <Card sx={cardStyles} onClick={handleClickCard}>
@@ -152,7 +152,7 @@ const {
 
         {/* Second Row */}
         <Box sx={{ display: "flex",justifyContent: "center", width: "100%" }} >          
-           <CalendarRowWeekDays  tasks={tasks} daysWeekSet={daysWeekSet} />           
+           <CalendarRowWeekDays  tasks={tasks} daysWeekSet={habit.daysWeekSet} />           
         </Box>
         <Divider orientation="horizontal" variant="middle" flexItem />
 

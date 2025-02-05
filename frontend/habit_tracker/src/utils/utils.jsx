@@ -72,7 +72,7 @@ export  const categories = [
       const todayString = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
     
       // Verificar si ya existe una tarea para hoy
-      const hasTaskForToday = tasks.some(task => task.date === todayString);
+      const hasTaskForToday = tasks?.some(task => task.date === todayString);
     
       // Si existe una tarea para hoy (en cualquier estado), retornar false
       if (hasTaskForToday) return false;
@@ -80,4 +80,12 @@ export  const categories = [
       // Verificar si el hábito está programado para hoy
       const dayNumber = (today.getDay() + 6) % 7; // Lunes = 0, Domingo = 6
       return habit.daysWeekSet.includes(dayNumber);
+    };
+
+    export const getCurrentDate = () => {
+      const today = new Date();
+      const year = today.getFullYear();
+      const month = String(today.getMonth() + 1).padStart(2, '0'); // Meses van de 0-11
+      const day = String(today.getDate()).padStart(2, '0');
+      return `${year}-${month}-${day}`;
     };

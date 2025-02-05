@@ -36,7 +36,7 @@ const sampleTasks = {
       }  
     }
 
-  const { habits, updateHabit, deleteHabit, isLoading } = useUsers(); 
+  const { habits, updateHabit, habitLogs, deleteHabit, isLoading } = useUsers(); 
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentHabits, setCurrentHabits] =useState(habits.filter(habit=>habit.archived==true))
@@ -87,12 +87,12 @@ const sampleTasks = {
       <HabitFormModal open={isModalOpen} handleClose={handleCloseModal} />
 
       <Typography variant='h4' component="h1" sx={{fontWeight: "600", margin: "16px 0px"}}>Hábitos archivados</Typography>   
-      <SearchBarWithFilters />
+      
       <Box sx={styles.cardContainer}>
       {currentHabits.map((habit, index) => (        
         <CalendarWeekly 
         habit={habit}        
-        tasks={sampleTasks}
+        tasks={habitLogs.find(log => log.id === habit.id)?.log || null}
         options={archivesOptionsCard}
         key={index}
       />

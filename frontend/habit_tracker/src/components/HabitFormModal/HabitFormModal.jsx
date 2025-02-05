@@ -95,6 +95,7 @@ const HabitFormModal = ({ open, handleClose }) => {
       return
     }
 
+    const newHabit = 
     addHabit({
       archived: false,
       title,
@@ -107,8 +108,9 @@ const HabitFormModal = ({ open, handleClose }) => {
       endDate,
       categoryId,
       daysWeekSet: selectedDays, 
-    })
-
+    });
+    console.log(`New habit created with id: ${newHabit.id}`)
+    
     handleClose();
   };
 

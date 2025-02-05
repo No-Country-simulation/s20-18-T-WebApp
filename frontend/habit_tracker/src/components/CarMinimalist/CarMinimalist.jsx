@@ -23,7 +23,7 @@ const defaultOptions = [
 
 
 
-export const CarMinimalist = ({ habit, tasks, options = defaultOptions }) => {
+export const CarMinimalist = ({ habit, tasks, onComplete, options = defaultOptions }) => {
   const navigate = useNavigate();
   const {      
         id,  

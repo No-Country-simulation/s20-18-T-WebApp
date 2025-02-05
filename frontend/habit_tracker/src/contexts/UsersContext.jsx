@@ -88,6 +88,14 @@ export const UserProvider = ({ children }) => {
     setHabits(updatedHabits);
     // Update localStorage with the new habit list
     localStorage.setItem(HABITS_STORAGE_KEY, JSON.stringify(updatedHabits));
+
+    //insert a first log with the newhabit id...
+    const updatedHabitLogs = [...habitLogs, {id: newHabit.id, log:[]}]
+    //console.log(updatedHabitLogs)
+    setHabitLogs(updatedHabitLogs);
+    localStorage.setItem(HABIT_LOGS_STORAGE_KEY, JSON.stringify(updatedHabitLogs));
+
+    return newHabit;
   };
 
   const updateHabit = (habitIdToUpdate, updates) => {
