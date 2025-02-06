@@ -7,45 +7,57 @@ import {
   Divider,
   Avatar,
   Typography,
-  Box,
-  Button
+  Box,  
 } from '@mui/material';
 
 import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
-import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
+import SystemUpdateAltIcon from '@mui/icons-material/SystemUpdateAlt';
+import GroupsIcon from '@mui/icons-material/Groups';
+import AppShortcutIcon from '@mui/icons-material/AppShortcut';
+
 
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom'; 
-import HabitFormModal from '../HabitFormModal/HabitFormModal';
 
+import { useUsers } from "../../contexts/UsersContext";
 
-const DrawerNavBar = ({user}) => {
+//import haruLogo from `${process.env.BASEURL}/images/HaruLogo.png`;
+
+const mapLevelName = [
+  'Principiante', 'Intermedio', 'Profesional', 'Experto'
+]
+
+const DrawerNavBar = () => {
   const [selectedIndex, setSelectedIndex] = useState(0); 
   const location = useLocation(); 
+  const { users, isLoading } = useUsers(); 
+  const [user, setUser] = useState({})
 
-  const userAvatarUrl = `./images/${user.avatar}`;
-
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const handleOpenModal = () => {
-    console.log('click en crear habito')
-    setIsModalOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-  };
+  const baseUrl = import.meta.env.VITE_BASE_URL;
+  
+  
+  useEffect(() => {
+    //console.log(users);
+    if (!isLoading) {
+      setUser(users[0]);
+    }    
+  }, [isLoading]);
 
   const navBarItems = [
-    { id: 0, name: 'Inicio', icon: <DashboardOutlinedIcon />, href: '/' },
-    { id: 1, name: 'Habitos', icon: <FavoriteBorderOutlinedIcon />, href: '/habits' },
-    { id: 2, name: 'Cerrar sesión', icon: <LogoutOutlinedIcon />, href: '/logout' },    
+    { id: 0, name: '', icon: '', href: '/profile' },  
+    { id: 1, name: 'Inicio', icon: <DashboardOutlinedIcon />, href: '/' },
+    { id: 2, name: 'Habitos', icon: <FavoriteBorderOutlinedIcon />, href: '/habits' },
+    { id: 3, name: 'Archivados', icon: <SystemUpdateAltIcon />, href: '/Archives' },
+    { id: 4, name: 'Haru', icon: <AppShortcutIcon />, href: '/haru' },
+    { id: 5, name: 'Nosotros', icon: <GroupsIcon />, href: '/us' },
+    { id: 6, name: 'Cerrar sesión', icon: <LogoutOutlinedIcon />, href: '/logout' },    
   ];
 
   const handleListItemClick = (index) => {
     setSelectedIndex(index);
+    console.log(index)
   };
 
   useEffect(() => {
@@ -56,23 +68,23 @@ const DrawerNavBar = ({user}) => {
      }
    }, [location]);
 
+if (isLoading) {
+  return(
+    <div>Cargando...
+    </div>
+  )
+}
+
   return (
     <div >      
-      <Box sx={{ display: 'flex', alignItems: 'center', p: 2 }}>
-        <Avatar sx={{ mr: 2 }}>          
-          <img src={userAvatarUrl} alt="Avatar del usuario" 
-            width="100%" height="auto"
-          />
-        </Avatar>
-        <div>
-          <Typography fontWeight="bold">{user.name}</Typography>
-          <Typography variant="body2" color="text.secondary">
-            {user.email}
-          </Typography>
-        </div>
-      </Box>
-      <Divider />
-      <List>
+       <Box
+          component="img"
+          src={`${baseUrl}/images/HaruLogo.png`}
+          alt="Haru logo"
+          sx={{ width: 140, height: "auto", pl: "0.8em", pt: "1em" }}
+        />         
+      <List>      
+
         {navBarItems.map((navItem, index) => (
           <React.Fragment key={navItem.name}>
             {index === navBarItems.length - 1 && <Divider sx={{mt: "2em"}}/>}
@@ -87,22 +99,41 @@ const DrawerNavBar = ({user}) => {
                   },
                 }}
               >
-                <ListItemIcon sx={{ color: selectedIndex === index ? 'primary.main' : 'inherit' }}>
-                  {navItem.icon}
-                </ListItemIcon>
-                <ListItemText primary={navItem.name} />
+                {(navItem.id !== 0) ?  
+                <>
+                  <ListItemIcon sx={{ color: selectedIndex === index ? 'primary.main' : 'inherit' }}>
+                    {navItem.icon}
+                  </ListItemIcon>
+                  <ListItemText primary={navItem.name} />
+                </> :
+                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                  <Avatar sx={{ mr: 2 }}>          
+                    <img src={`${baseUrl}/images/${user.avatar}`} alt={user.name}
+                      width="100%" height="auto"
+                    />
+                  </Avatar>
+                  <div>
+                    <Typography fontWeight="bold">{user.name}</Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      {mapLevelName[user.level]}
+                    </Typography>
+                  </div>
+                </Box>
+              }
+
               </ListItemButton>
             </ListItem>
           </React.Fragment>
         ))}
       </List>
-      <Button sx={{width: "70%", ml: "50px", mb: "30px"}}
+      {/*
+       <Button sx={{width: "70%", ml: "50px", mb: "30px"}}
         variant='contained' 
         startIcon={<AddOutlinedIcon />}
         onClick={handleOpenModal}>
         Crear hábito
-      </Button>
-      <HabitFormModal open={isModalOpen} handleClose={handleCloseModal} />
+      </Button> 
+      <HabitFormModal open={isModalOpen} handleClose={handleCloseModal} />*/}
     </div>
   );
 }

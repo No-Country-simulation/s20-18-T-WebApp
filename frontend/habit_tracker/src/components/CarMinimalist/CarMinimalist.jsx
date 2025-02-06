@@ -1,5 +1,4 @@
 import React, {useState} from "react";
-import { useNavigate } from "react-router-dom";
 
 import { Card, CardContent, Typography, Box, Button, IconButton, Menu, MenuItem  } from "@mui/material";
 
@@ -9,80 +8,83 @@ import ShowChartOutlinedIcon from '@mui/icons-material/ShowChartOutlined';
 import Divider from '@mui/material/Divider';
 
 
-import CalendarRowWeekDays from "../CalendarRowWeekDays/CalendarRowWeekDays";
-
-import { iconMap, categories } from "../../utils/utils";
-
+// import CalendarRowWeekDays from "../CalendarRowWeekDays/CalendarRowWeekDays";
 import DayOfWeekChip from './DayOfWeekChip';
+import { useNavigate } from "react-router-dom";
+
+import { categories, iconMap } from "../../utils/utils";
 
 import { canCompleteToday } from "../../utils/utils";
 
 const defaultOptions = [
-  {id:0, name: "Ver mas", onClick: null},
-  {id:1, name: "Editar", onClick: null}
-];
+  {id:0, name: "Ver mas"},
+  {id:1, name: "Editar"}
+]
 
 
-export const CalendarWeekly = ({ habit, tasks, onComplete, options = defaultOptions }) => {
 
-const navigate = useNavigate();
-
-const [ showCompleteButton, setShowCompleteButton] = useState(canCompleteToday(habit, tasks));
-const { 
-    id,
-    categoryId,    
-    title,
-    streak,
-    porcCompletetion,        
-    date,              
-    daysWeekSet    
-  } = habit;
-  const icon = categories.find(cat=>cat.id == categoryId).icon;  
+export const CarMinimalist = ({ habit, tasks, onComplete, options = defaultOptions }) => {
+  const navigate = useNavigate();
+  const {      
+        id,  
+        title,
+        streak,
+        porcCompletetion,        
+        date,                
+        categoryId,
+        daysWeekSet    
+      } = habit
+  const iconName = categories.find(cat=>cat.id == categoryId).icon;  
   const color = categories.find(cat=>cat.id == categoryId).color; 
+  
 
-  const cardStyles = {
-    borderRadius: '1rem',
-    width: {xs: "100%", md: "460px"},
-    paddingTop: "0.2em",
-    paddingLeft: "1em",
-    paddingRight: "1em",
-    boxShadow: 1,
-    textDecoration: 'none', // Quitar subrayado del enlace
-    color: 'inherit', // Heredar el color del texto
-    cursor: 'pointer', // Indicar que es clickeable
-    '&:hover': {
-      boxShadow: 3, // Un ligero efecto al pasar el ratón        
-    },
-    backgroundColor: "#FCFCFC"
-  }
+  const [ showCompleteButton, setShowCompleteButton] = useState(canCompleteToday(habit, tasks));
 
-  const cardTitleIcon = {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: '5px',
-    width: 30,
-    height: 30,
-    bgcolor: color,
-    color: '#FCFCFC',
-    mr: 1,
-  }      
+      const cardStyles = {
+        borderRadius: '1rem',
+        width: {xs: "100%", md: "460px"},
+        minHeight: "170px",
+        paddingTop: "0.2em",
+        paddingLeft: "1em",
+        paddingRight: "1em",
+        boxShadow: 1,
+        textDecoration: 'none', // Quitar subrayado del enlace
+        color: 'inherit', // Heredar el color del texto
+        cursor: 'pointer', // Indicar que es clickeable
+        '&:hover': {
+          boxShadow: 3, // Un ligero efecto al pasar el ratón        
+        },
+        backgroundColor: "#FCFCFC",
+        zIndex:100
+      }
 
-  const cardTitleText = { fontWeight: '600', fontSize: '1.3em', lineHeight: "1em" };
+      const cardTitleIcon = {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: '5px',
+        width: 30,
+        height: 30,
+        bgcolor: color,
+        color: '#FCFCFC',
+        mr: 1,
+      }      
 
-  const cardContent = {
-    display: "flex",
-    flexDirection: "column",
-    rowGap: "16px",
-    padding: {xs: '16px 0px', md: "16px"}
-  }
+      const cardTitleText = { fontWeight: '600', fontSize: '1.3em', lineHeight: "1em" };
 
-  const handleClickComplete = (e) => {
-    console.log('click en complete',id);
-    e.stopPropagation();
-    onComplete(id);
-    setShowCompleteButton(false);
-  }; 
+      const cardContent = {
+        display: "flex",
+        flexDirection: "column",
+        rowGap: "16px",
+        padding: {xs: '16px 0px', md: "16px"}
+      }      
+
+      const handleClickComplete = (e) => {
+        //console.log('click en complete');
+        e.stopPropagation();
+        onComplete(id);
+        setShowCompleteButton(false);
+      }; 
 
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -98,17 +100,17 @@ const {
 
   const handleOptionClick = (e,option) => {
     e.stopPropagation();
-    //console.log(`Option selected: ${option}`);
-    setAnchorEl(null); // Cierra el menú después de seleccionar    
-    const onClick = options.find(opt=>opt.id==option).onClick || null;        
-    onClick(e, habit);    
+    console.log(`Option selected: ${option}`);
+    setAnchorEl(null); // Cierra el menú después de seleccionar
   };
 
-  const handleClickCard = () => {    
+  const handleClickCard = () => {
+    console.log(`Click en la card, ver habit con id ${habit.id}`);
     navigate(`/viewhabit/${habit.id}`);
-  }  
+  }
 
-  //console.log(habit);
+  
+  //console.log(canCompleteToday(habit.daysWeekSet))
 
   return (
     <Card sx={cardStyles} onClick={handleClickCard}>
@@ -118,16 +120,16 @@ const {
         <Box display="flex" alignItems="center" justifyContent="space-between" >
           <Box display="flex" alignItems="center">
             <Box sx={cardTitleIcon} >
-              {iconMap[icon]}
+              {iconMap[iconName]}
             </Box>
             <Typography variant="subtitle1" sx={cardTitleText}>
               {title}
             </Typography>
           </Box>
-          <IconButton aria-label="opciones" onClick={handleMoreClick}>
+          {/*<IconButton aria-label="opciones" onClick={handleMoreClick}>
             <MoreVertIcon />
           </IconButton>
-          {/* Menu Component */}
+           Menu Component */}
           <Menu
             anchorEl={anchorEl}
             open={open}
@@ -140,7 +142,7 @@ const {
               vertical: "top",
               horizontal: "right",
             }}
-          >           
+          >
             {options.map((option, index) => (
               <MenuItem key={index}
                 onClick={(e) => handleOptionClick(e, option.id)}>
@@ -151,8 +153,8 @@ const {
         </Box>
 
         {/* Second Row */}
-        <Box sx={{ display: "flex",justifyContent: "center", width: "100%" }} >          
-           <CalendarRowWeekDays  tasks={tasks} daysWeekSet={habit.daysWeekSet} />           
+        <Box sx={{ display: "flex",justifyContent: "space-between" }} >          
+          {/* <CalendarRowWeekDays  tasks={tasks} daysWeekSet={daysWeekSet} />           */}
         </Box>
         <Divider orientation="horizontal" variant="middle" flexItem />
 

@@ -35,49 +35,47 @@ const style = {
     },
   };
 
-  const categories = [
-    {id: 0, name: "Actividad Física", units: ['Metros', 'Kilómetros', 'Minutos', 'Veces']}, 
-    {id: 1, name: "Malos Hábitos", units: ['Minutos', 'Horas', 'Veces']},    
-    {id: 2, name: "Aprendizaje/Estudio", units: ['Minutos', 'Horas', 'Páginas', 'Capítulos', 'Veces']},    
-    {id: 3, name: "Finanzas", units: ['Minutos', 'Horas', 'Veces']},    
-    {id: 4, name: "Actividades Sociales", units: ['Minutos', 'Horas', 'Veces']},    
-    {id: 5, name: "Otro hábito", units: ['Metros', 'Kilómetros', 'Horas', 'Minutos', 'Páginas', 'Capítulos', 'Veces']}    
-    ]
+  import { categories, iconMap } from '../../utils/utils';
+  import { useUsers } from '../../contexts/UsersContext';
+
+
 
 const HabitFormModal = ({ open, handleClose }) => {
-  const [categoryId, setCategoryId] = useState('');
+  const [categoryId, setCategoryId] = useState(0);
   const [title, setTitle] = useState('');
+  const [hasGoal, setHasGoal] = useState(false);
   const [goalUnit, setGoalUnit] = useState('');
   const [goalValue, setGoalValue] = useState('');
   const [hasDuration, setHasDuration] = useState(false);
   const [endDate, setEndDate] = useState('');
   const [selectedDays, setSelectedDays] = useState([]);
   const [currentUnits, setCurrentUnits] = useState([]);
+  const {addHabit} = useUsers();
 
-  const handleDayClick = (day) => {
-    if (selectedDays.includes(day)) {
-      setSelectedDays(selectedDays.filter((d) => d !== day));
+  const handleDayClick = (day, index) => {
+    if (selectedDays.includes(index)) { // Check for index in selectedDays
+      setSelectedDays(selectedDays.filter((d) => d !== index)); // Remove index
     } else {
-      setSelectedDays([...selectedDays, day]);
+      setSelectedDays([...selectedDays, index]); // Add index
     }
   };
 
   const handleCategory = (e) => {
     const catId = e.target.value;
     setCategoryId(catId);
-    const currentCategory = categories.find(cat=>cat.id==catId);    
+    const currentCategory = categories.find(cat=>cat.id==catId);
     setCurrentUnits(currentCategory.units);
     setTitle(currentCategory.name);
   }
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    
+
 
     let isValid = true;
     const errors = {};
-console.log(categoryId)
-    if (categoryId == '') {
+
+    if (categoryId == null) {
       errors.categoryId = 'La categoría es requerida.';
       isValid = false;
     }
@@ -97,29 +95,36 @@ console.log(categoryId)
       return
     }
 
-    // Handle form submission logic here
-    console.log({
-      categoryId,
+    const newHabit = 
+    addHabit({
+      archived: false,
       title,
+      streak: 0,
+      porcCompletetion: 0,
+      hasGoal,
       goalUnit,
       goalValue,
       hasDuration,
       endDate,
-      selectedDays,
+      categoryId,
+      daysWeekSet: selectedDays, 
     });
-
+    console.log(`New habit created with id: ${newHabit.id}`)
+    
     handleClose();
   };
 
   useEffect(() => {
-    setCategoryId('');
-    setTitle('');
-    setGoalUnit([]);
+    setCategoryId(0);
+    setTitle(categories[0].name);
+    setGoalUnit('');
     setGoalValue('');
     setHasDuration(false);
     setEndDate('');
     setSelectedDays([]);
-    setCurrentUnits([]);
+    setCurrentUnits(categories[0].units);
+
+
   }, [open]);
 
   return (
@@ -130,10 +135,18 @@ console.log(categoryId)
       aria-describedby="habit-form-modal-description"
     >
       <Box sx={style}>
-        <Typography id="habit-form-modal-title" variant="h6" component="h2" mb={1}>
+        <Typography
+          id="habit-form-modal-title"
+          variant="h6"
+          component="h2"
+          mb={1}
+        >
           Crear un nuevo hábito
         </Typography>
-        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+        <form
+          onSubmit={handleSubmit}
+          style={{ display: "flex", flexDirection: "column", gap: 16 }}
+        >
           <FormControl fullWidth>
             <InputLabel id="categoria-label">Categoría</InputLabel>
             <Select
@@ -145,11 +158,15 @@ console.log(categoryId)
             >
               <MenuItem value="">
                 <em>Seleccionar categoría</em>
-              </MenuItem>              
-              { categories.map(cat=>
-                  <MenuItem value={cat.id} key={`cat_${cat.id}`}>{cat.name}</MenuItem>
-              )} 
-              
+              </MenuItem>
+              {categories.map((cat) => (
+                <MenuItem value={cat.id} key={`cat_${cat.id}`} sx={{}}>
+                  <Box sx={{display: "flex", flexDirection: "row", alignItems: "center", columnGap: 1, color: cat.color}}>
+                    {iconMap[cat.icon]}
+                    {cat.name}
+                  </Box>
+                </MenuItem>
+              ))}
             </Select>
           </FormControl>
 
@@ -162,32 +179,72 @@ console.log(categoryId)
             onChange={(e) => setTitle(e.target.value)}
           />
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 16, '@media (minWidth: 600px)': { flexDirection: 'row', gap: 16 } }}>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: 16,
+              "@media (minWidth: 600px)": { flexDirection: "row", gap: 16 },
+            }}
+          >
             <FormControl fullWidth>
-              <InputLabel id="unidad-meta-label">Unidad de tu meta (Opcional)</InputLabel>
-              <Select
-                labelId="unidad-meta-label"
-                id="unidad-meta"
-                value={goalUnit}
-                label="Unidad de tu meta (Opcional)"
-                onChange={(e) => setGoalUnit(e.target.value)}
-              >
-                <MenuItem value="">
-                  <em>Seleccionar unidades</em>
-                </MenuItem>   
-                { currentUnits.map((unit, index)=>
-                  <MenuItem value={unit} key={`unit_index_${index}`}>{unit}</MenuItem>
-                )}               
-              </Select>
+              <Typography variant="subtitle2">
+                ¿Este hábito tiene metas? (Opcional)
+              </Typography>
+              <FormControl component="fieldset">
+                <RadioGroup
+                  aria-label="tiene-metas"
+                  name="tiene-metas"
+                  value={hasGoal}
+                  onChange={(e) => setHasGoal(e.target.value)}
+                  row
+                >
+                  <FormControlLabel
+                    value="true"
+                    control={<Radio />}
+                    label="Si"
+                  />
+                  <FormControlLabel
+                    value="false"
+                    control={<Radio />}
+                    label="No"
+                  />
+                </RadioGroup>
+              </FormControl>
+
+              {hasGoal === "true" && (
+                <Box sx={{width: "100%", display: "flex", flexDirection: "column", rowGap: "1em", padding: "10px 0px"}}>
+
+                  <FormControl fullWidth>
+                  <InputLabel id="unidad-meta-label">Unidad de tu meta</InputLabel>
+                  <Select
+                    sx={{width: "100%"}}
+                    id="unidad-meta"
+                    value={goalUnit}
+                    label="Unidad de tu meta (Opcional)"
+                    onChange={(e) => setGoalUnit(e.target.value)}
+                  >
+                    <MenuItem value="">
+                      <em>Seleccionar unidades</em>
+                    </MenuItem>
+                    {currentUnits.map((unit, index) => (
+                      <MenuItem value={unit} key={`unit_index_${index}`}>
+                        {unit}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                  </FormControl>
+                  <TextField
+                    fullWidth
+                    id="valor-meta"
+                    label="Valor de tu meta (Opcional)"
+                    variant="outlined"
+                    value={goalValue}
+                    onChange={(e) => setGoalValue(e.target.value)}
+                  />
+                </Box>
+              )}
             </FormControl>
-            <TextField
-              fullWidth
-              id="valor-meta"
-              label="Valor de tu meta (Opcional)"
-              variant="outlined"
-              value={goalValue}
-              onChange={(e) => setGoalValue(e.target.value)}
-            />
           </div>
 
           <Typography variant="subtitle2">
@@ -224,26 +281,30 @@ console.log(categoryId)
           <Typography variant="subtitle2">
             Días para realizar tu habito
           </Typography>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
-            {['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'].map(
-              (day) => (
-                <Button
-                  key={day}
-                  variant={selectedDays.includes(day) ? 'contained' : 'outlined'}
-                  onClick={() => handleDayClick(day)}
-                  color="primary"
-                  sx={{ flex: '1 0 auto', minWidth: 'auto' }}
-                >
-                  {day}
-                </Button>
-              )
-            )}
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+            {[
+              "Lunes",
+              "Martes",
+              "Miércoles",
+              "Jueves",
+              "Viernes",
+              "Sábado",
+              "Domingo",
+            ].map((day, index) => (
+              <Button
+                key={day}
+                variant={selectedDays.includes(index) ? "contained" : "outlined"} // Check for index in selectedDays
+                onClick={() => handleDayClick(day, index)} // Pass index to handleDayClick
+                color="primary"
+                sx={{ flex: "1 0 auto", minWidth: "auto" }}
+              >
+                {day}
+              </Button>
+            ))}
           </div>
 
           <Box mt={2} display="flex" justifyContent="flex-end" gap={1}>
-            <Button onClick={handleClose}>
-              Cancelar
-            </Button>
+            <Button onClick={handleClose}>Cancelar</Button>
             <Button type="submit" variant="contained" color="primary">
               Crear habito
             </Button>
