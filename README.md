@@ -6,6 +6,8 @@ _En esta readme encontraras la información resumida de nuestro proyecto._
 
 Mira **[Documentación](https://docs.google.com/document/d/13J20NIpS3rZAGhy_lzFSz5gN7MZH2X1p)** para conocer más detalle del proyecto.
 
+Podes probar la aplicacion en **[HARU app en Render](https://s20-18-t-webapp.onrender.com/)** !!
+
 
 ## Descripción 📋
 
