@@ -59,7 +59,7 @@ const integrantes = [
     nombre: "Jeniree Suarez",
     rol: "QA Tester",
     imagen: "JenireeSuarez.png",
-    enlaces: []
+    enlaces: ["https://www.linkedin.com/in/jenireesuarez/"]
   },
 ]
 
